@@ -6,6 +6,7 @@ using UnityEngine;
 
 using System.IO;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 
 /*
     Accelerates the cube to which it is attached, modelling an harmonic oscillator.
@@ -20,20 +21,29 @@ public class SimulationController : MonoBehaviour
     // CONFIG
     public Vector3 windSpeed;
     public static SimulationController Instance { get; private set; }
+    
+    [Header("Config Graph")]
+    public int graphScalar = 80;
+    public int graphOffset = -10;
 
-    public int GraphScalar = 80;
-    public int GraphOffset = -10;
+    // CONFIG FEDER
+    [Header("Config Spring")]
+    public float springLength = 1f;
+    public float springConstant = 2f;
 
+    private float _springCompression;
+    
+    [Header("Connections")]
     // GameObjects
-    public TextMesh ProtocolText;
+    public TextMesh protocolText;
     public Window_Graph windowGraphCube1Vel;
     public Window_Graph windowGraphCube2Vel;
+
+    public SpringController spring1;
     // CUBE 1 Stuff
-    public CubeController Cube1;
-    public CubeController Cube2;
-    public TextMesh TextMesh1;
-    
-    private Vector3 Cube1_Vel;
+    public CubeController cube1;
+    public CubeController cube2;
+    public TextMesh textMesh1;
     
     // Data
     private int _lastLoggedSecond = 0;
@@ -57,8 +67,9 @@ public class SimulationController : MonoBehaviour
 
     private void Start()
     {
-        ProtocolText.text = "Start: " + 0;
+        protocolText.text = "Start: " + 0;
         WindController.Instance.EventStartWind();
+        spring1.SetSpringLength(springLength);
     }
 
     // FixedUpdate can be called multiple times per frame
@@ -66,20 +77,35 @@ public class SimulationController : MonoBehaviour
     {
         _msSinceStart += Time.deltaTime;
         _secondsSinceStart = _msSinceStart % 60;
-        Cube1_Vel = Cube1.GetVel();
-        TextMesh1.text = "Time(s): " + $"{_secondsSinceStart:0.00}";
+   
+        textMesh1.text = "Time(s): " + $"{_secondsSinceStart:0.00}";
 
         int secondsSinceStartInt = (int)_secondsSinceStart;
         if (secondsSinceStartInt > _lastLoggedSecond)
         {
             _lastLoggedSecond = (int)_secondsSinceStart;
-            int newValue = ((int)(GraphScalar * Cube1.GetVel().x)) + GraphOffset;
-            int newValue2 = ((int)(GraphScalar * Cube2.GetVel().x)) + GraphOffset;
+            int newValue = ((int)(graphScalar * cube1.GetVel().x)) + graphOffset;
+            int newValue2 = ((int)(graphScalar * cube2.GetVel().x)) + graphOffset;
             valueListCube1Vel.Add(newValue);
             valueListCube2Vel.Add(newValue2);
             UpdateGraphs();
         }
-        
+
+        UpdateSpringForce();
+
+    }
+
+    private void UpdateSpringForce()
+    {
+        if (GetCubesDistance() <= springLength)
+        {
+            spring1.SetSpringLength(GetCubesDistance());
+            WindController.Instance.EventStopWind();
+            _springCompression = springLength - GetCubesDistance();
+            float force = springConstant * _springCompression;
+            cube1.AddForce(-force);
+            cube2.AddForce(force);
+        }
     }
 
     void OnApplicationQuit() {
@@ -94,15 +120,20 @@ public class SimulationController : MonoBehaviour
 
     public void WriteProtocol(String text)
     {
-        String temp = ProtocolText.text;
+        String temp = protocolText.text;
         String newText = "\n" + $"{_secondsSinceStart:0.00}" + ": " + text ;
-        ProtocolText.text = temp + newText;
+        protocolText.text = temp + newText;
     }
 
     private void UpdateGraphs()
     {
         windowGraphCube1Vel.ShowGraph(valueListCube1Vel);
         windowGraphCube2Vel.ShowGraph(valueListCube2Vel);
+    }
+    
+    public float GetCubesDistance()
+    {
+        return Vector3.Distance(cube1.transform.position, cube2.transform.position);
     }
     
 }

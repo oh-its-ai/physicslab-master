@@ -72,7 +72,8 @@ public class WindController : MonoBehaviour
     
     public void EventStopWind()
     {
-        SimulationController.Instance.WriteProtocol("Wind stopped.");
+        if(_windActive)
+            SimulationController.Instance.WriteProtocol("Wind stopped.");
         _windActive = false;
     }
 

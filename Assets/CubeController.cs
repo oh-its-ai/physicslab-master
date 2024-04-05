@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using System.IO;
+using DefaultNamespace;
 
 /*
     Accelerates the cube to which it is attached, modelling an harmonic oscillator.
@@ -13,7 +14,7 @@ using System.IO;
     Author: kemf
     Version: 1.0
 */
-public class CubeController : MonoBehaviour
+public class CubeController : MonoBehaviour 
 {
     // Config
     public bool registerCollision = false;
@@ -43,7 +44,7 @@ public class CubeController : MonoBehaviour
 
     // FixedUpdate can be called multiple times per frame
     void FixedUpdate() {
-        var position = _rigidBody.position;
+        /*var position = _rigidBody.position;
         var forceX = -position.x * springConstant * dirVector.x;
         var forceY = -position.y * springConstant * dirVector.y;
         var forceZ = -position.z * springConstant * dirVector.z;
@@ -54,10 +55,10 @@ public class CubeController : MonoBehaviour
         
         _currentTimeStep += Time.deltaTime;
         _timeSeries.Add(new List<float>() {_currentTimeStep, _rigidBody.position.x, _rigidBody.velocity.x, forceX});
+        
+        
+        */
         labelVelocity.text = _rigidBody.velocity.ToString();
-        
-        
-        
     }
 
     void OnApplicationQuit() {
@@ -80,6 +81,11 @@ public class CubeController : MonoBehaviour
         return _rigidBody.velocity;
     }
 
+    public float GetMass()
+    {
+        return _rigidBody.mass;
+    }
+    
     private void OnCollisionEnter(Collision other)
     {
         CubeController temp;
@@ -87,8 +93,14 @@ public class CubeController : MonoBehaviour
         {
             SimulationController.Instance.EventRegisterImpact(this);
             _impactRegistered = true;
-            _rigidBody.velocity = Vector3.zero;
+            // Assume this object also has a Rigidbody component.
+            
         }
             
+    }
+
+    public void AddForce(float force)
+    {
+        _rigidBody.AddForce(new Vector3(force,0,0), ForceMode.Impulse);
     }
 }
