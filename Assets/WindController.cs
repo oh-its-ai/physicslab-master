@@ -66,6 +66,7 @@ public class WindController : MonoBehaviour
 
     public void EventStartWind()
     {
+        SimulationController.Instance.WriteProtocol("Wind started.");
         _windActive = true;
     }
     
