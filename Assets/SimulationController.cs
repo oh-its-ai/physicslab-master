@@ -5,6 +5,7 @@ using System.ComponentModel;
 using UnityEngine;
 
 using System.IO;
+using UnityEngine.Serialization;
 
 /*
     Accelerates the cube to which it is attached, modelling an harmonic oscillator.
@@ -25,10 +26,11 @@ public class SimulationController : MonoBehaviour
 
     // GameObjects
     public TextMesh ProtocolText;
-    public Window_Graph WindowGraph;
-    
+    public Window_Graph windowGraphCube1Vel;
+    public Window_Graph windowGraphCube2Vel;
     // CUBE 1 Stuff
     public CubeController Cube1;
+    public CubeController Cube2;
     public TextMesh TextMesh1;
     
     private Vector3 Cube1_Vel;
@@ -37,7 +39,8 @@ public class SimulationController : MonoBehaviour
     private int _lastLoggedSecond = 0;
     private float _msSinceStart = 0f;
     private float _secondsSinceStart = 0;
-    public List<int> valueList = new List<int>() {};
+    public List<int> valueListCube1Vel = new List<int>() {};
+    public List<int> valueListCube2Vel = new List<int>() {};
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
@@ -55,6 +58,7 @@ public class SimulationController : MonoBehaviour
     private void Start()
     {
         ProtocolText.text = "Start: " + 0;
+        WindController.Instance.EventStartWind();
     }
 
     // FixedUpdate can be called multiple times per frame
@@ -63,14 +67,16 @@ public class SimulationController : MonoBehaviour
         _msSinceStart += Time.deltaTime;
         _secondsSinceStart = _msSinceStart % 60;
         Cube1_Vel = Cube1.GetVel();
-        TextMesh1.text = Cube1_Vel.ToString();
+        TextMesh1.text = "Time(s): " + $"{_secondsSinceStart:0.00}";
 
         int secondsSinceStartInt = (int)_secondsSinceStart;
         if (secondsSinceStartInt > _lastLoggedSecond)
         {
             _lastLoggedSecond = (int)_secondsSinceStart;
-            int newValue = ((int)(GraphScalar * Cube1_Vel.x)) + GraphOffset;
-            valueList.Add(newValue);
+            int newValue = ((int)(GraphScalar * Cube1.GetVel().x)) + GraphOffset;
+            int newValue2 = ((int)(GraphScalar * Cube2.GetVel().x)) + GraphOffset;
+            valueListCube1Vel.Add(newValue);
+            valueListCube2Vel.Add(newValue2);
             UpdateGraphs();
         }
         
@@ -83,7 +89,7 @@ public class SimulationController : MonoBehaviour
     public void EventRegisterImpact(CubeController cube)
     {
         WindController.Instance.EventStopWind();
-        WriteProtocol(cube.name);
+        //WriteProtocol(cube.name);
     }
 
     public void WriteProtocol(String text)
@@ -95,7 +101,8 @@ public class SimulationController : MonoBehaviour
 
     private void UpdateGraphs()
     {
-        WindowGraph.ShowGraph(valueList);
+        windowGraphCube1Vel.ShowGraph(valueListCube1Vel);
+        windowGraphCube2Vel.ShowGraph(valueListCube2Vel);
     }
     
 }

@@ -17,7 +17,8 @@ public class CubeController : MonoBehaviour
 {
     // Config
     public bool registerCollision = false;
-    
+    public bool stopAtImpact = false;
+    private bool _impactRegistered = false;
     private Rigidbody _rigidBody;
 
     public int springConstant; // N/m
@@ -42,18 +43,21 @@ public class CubeController : MonoBehaviour
 
     // FixedUpdate can be called multiple times per frame
     void FixedUpdate() {
-        
-        // Calculate spring force on body for x component of force vector
         var position = _rigidBody.position;
         var forceX = -position.x * springConstant * dirVector.x;
         var forceY = -position.y * springConstant * dirVector.y;
-        var forceZ = -position.z * springConstant * dirVector.z; // N
-
-        _rigidBody.AddForce(new Vector3(forceX, forceY, forceZ));
-
+        var forceZ = -position.z * springConstant * dirVector.z;
+        if (!(stopAtImpact && _impactRegistered))
+        {
+            _rigidBody.AddForce(new Vector3(forceX, forceY, forceZ));
+        }
+        
         _currentTimeStep += Time.deltaTime;
         _timeSeries.Add(new List<float>() {_currentTimeStep, _rigidBody.position.x, _rigidBody.velocity.x, forceX});
         labelVelocity.text = _rigidBody.velocity.ToString();
+        
+        
+        
     }
 
     void OnApplicationQuit() {
@@ -79,7 +83,12 @@ public class CubeController : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         CubeController temp;
-        if(other.gameObject.TryGetComponent<CubeController>(out temp) && registerCollision)
+        if (other.gameObject.TryGetComponent<CubeController>(out temp) && registerCollision)
+        {
             SimulationController.Instance.EventRegisterImpact(this);
+            _impactRegistered = true;
+            _rigidBody.velocity = Vector3.zero;
+        }
+            
     }
 }
