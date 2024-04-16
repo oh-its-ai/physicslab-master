@@ -252,6 +252,7 @@ MonoBehaviour:
   windSpeed: {x: -20, y: 0, z: 0}
   windActiveInit: 1
   directionIndicator: {fileID: 1136427816}
+  windParticles: {fileID: 2055952007}
   affectedBodies:
   - {fileID: 1377017608}
 --- !u!4 &168561526
@@ -2115,6 +2116,12 @@ Transform:
 --- !u!4 &2055952005 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7718190150541057816, guid: 45e43c424df2a42ce99a5dd6cc7cf9a6,
+    type: 3}
+  m_PrefabInstance: {fileID: 3620070103315960955}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2055952007 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6909507938155566087, guid: 45e43c424df2a42ce99a5dd6cc7cf9a6,
     type: 3}
   m_PrefabInstance: {fileID: 3620070103315960955}
   m_PrefabAsset: {fileID: 0}

@@ -58,11 +58,35 @@ public class CubeController : MonoBehaviour
         
         
         */
-        labelVelocity.text = _rigidBody.velocity.ToString();
+        UpdateText();
     }
 
     void OnApplicationQuit() {
         WriteTimeSeriesToCSV();
+    }
+
+    private void UpdateText()
+    {
+        
+        //labelVelocity.text = textSpeed + "\n" + textEkin;
+        labelVelocity.text = "Speed(m/s): " + $"{GetSpeed():0.00}\n" +
+                             "E_kin(N): "+  $"{GetKineticEnergy():0.00}\n"+
+                             "Impuls: "+  $"{GetImpuls():0.00}\n";
+    }
+
+    public float GetKineticEnergy()
+    {
+        return 0.5f * GetMass() * MathF.Pow(GetSpeed(),2f);
+    }
+
+    public float GetSpeed()
+    {
+        return Vector3.Magnitude(_rigidBody.velocity);
+    }
+
+    public float GetImpuls()
+    {
+        return GetMass() * GetSpeed();
     }
 
     private void WriteTimeSeriesToCSV() {

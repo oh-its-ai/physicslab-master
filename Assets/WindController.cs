@@ -21,6 +21,7 @@ public class WindController : MonoBehaviour
     public GameObject directionIndicator;
     public static WindController Instance { get; private set; }
 
+    public ParticleSystem windParticles;
     public List<Rigidbody> affectedBodies;
    
     private void Awake() 
@@ -68,6 +69,7 @@ public class WindController : MonoBehaviour
     {
         SimulationController.Instance.WriteProtocol("Wind started.");
         _windActive = true;
+        windParticles.Play();
     }
     
     public void EventStopWind()
@@ -75,6 +77,7 @@ public class WindController : MonoBehaviour
         if(_windActive)
             SimulationController.Instance.WriteProtocol("Wind stopped.");
         _windActive = false;
+        windParticles.Pause();
     }
 
     void RotateWindIndicator()

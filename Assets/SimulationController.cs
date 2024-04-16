@@ -16,11 +16,15 @@ using UnityEngine.UIElements;
     Author: kemf
     Version: 1.0
 */
+
 public class SimulationController : MonoBehaviour
 {
     // CONFIG
     public Vector3 windSpeed;
     public static SimulationController Instance { get; private set; }
+    
+    // Phases
+    public enum Phase {Phase1, Phase2, Phase3, Phase4};
     
     [Header("Config Graph")]
     public int graphScalar = 80;
@@ -51,6 +55,8 @@ public class SimulationController : MonoBehaviour
     private float _secondsSinceStart = 0;
     public List<int> valueListCube1Vel = new List<int>() {};
     public List<int> valueListCube2Vel = new List<int>() {};
+
+    private Phase _activePhase = Phase.Phase1;
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
@@ -97,10 +103,16 @@ public class SimulationController : MonoBehaviour
 
     private void UpdateSpringForce()
     {
+        if (GetCubesDistance() <= springLength && _activePhase == Phase.Phase1)
+        {
+            ChangePhase(Phase.Phase2);
+            WindController.Instance.EventStopWind();
+            WriteProtocol("Impuls on impact: " + cube1.GetMass() * cube1.GetSpeed());
+        }
         if (GetCubesDistance() <= springLength)
         {
             spring1.SetSpringLength(GetCubesDistance());
-            WindController.Instance.EventStopWind();
+            
             _springCompression = springLength - GetCubesDistance();
             float force = springConstant * _springCompression;
             cube1.AddForce(-force);
@@ -116,6 +128,11 @@ public class SimulationController : MonoBehaviour
     {
         WindController.Instance.EventStopWind();
         //WriteProtocol(cube.name);
+    }
+
+    public float GetImpulsPower(CubeController giver)
+    {
+        return giver.GetMass() * giver.GetSpeed();
     }
 
     public void WriteProtocol(String text)
@@ -135,5 +152,18 @@ public class SimulationController : MonoBehaviour
     {
         return Vector3.Distance(cube1.transform.position, cube2.transform.position);
     }
-    
+
+    #region Phase Handling
+
+    public Phase GetActivePhase()
+    {
+        return _activePhase;
+    }
+
+    private void ChangePhase(Phase newPhase)
+    {
+        _activePhase = newPhase;
+    }
+
+    #endregion
 }

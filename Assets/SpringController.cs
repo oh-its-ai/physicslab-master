@@ -53,19 +53,21 @@ public class SpringController : MonoBehaviour
         }
     }
 
+    
     private void UpdateSpringVisuals()
     {
-        if (cubeLeft && cubeRight && springLine)
-        {
-            // Create an array to hold the positions
-            Vector3[] positions = new Vector3[2];
         
-            // Assign the cube positions to the array
-            positions[0] = cubeLeft.transform.position;
-            positions[1] = cubeLeft.transform.position + new Vector3(length,0,0);
+        if (!cubeLeft || !cubeRight || !springLine) return;
         
-            // Set the positions on the LineRenderer
-            springLine.SetPositions(positions);
-        }
+        // Create an array to hold the positions
+        Vector3[] positions = new Vector3[2];
+        
+        // Assign the cube positions to the array
+        var position = cubeLeft.transform.position;
+        positions[0] = position;
+        positions[1] = position + new Vector3(length,0,0);
+        
+        // Set the positions on the LineRenderer
+        springLine.SetPositions(positions);
     }
 }
