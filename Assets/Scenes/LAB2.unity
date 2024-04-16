@@ -249,7 +249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 432f83e35bcd444c58e814d0225003fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  windSpeed: {x: -20, y: 0, z: 0}
   windActiveInit: 1
   directionIndicator: {fileID: 1136427816}
   windParticles: {fileID: 2055952007}
@@ -1599,11 +1598,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7044871b5c6bb4be99630578bd767467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  labConfig: {fileID: 11400000, guid: 7e9055025e4b44ec782dd9802f53a6e5, type: 2}
   windSpeed: {x: -1, y: 0, z: 0}
   graphScalar: 10
   graphOffset: 70
-  springLength: 2
-  springConstant: -1.17
   protocolText: {fileID: 199351860}
   windowGraphCube1Vel: {fileID: 387224718}
   windowGraphCube2Vel: {fileID: 453517848}

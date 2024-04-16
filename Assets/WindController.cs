@@ -15,7 +15,7 @@ using System.IO;
 public class WindController : MonoBehaviour
 {
     // CONFIG
-    public Vector3 windSpeed;
+    private Vector3 _windSpeed;
     public bool windActiveInit = true;
     private bool _windActive = false;
     public GameObject directionIndicator;
@@ -41,6 +41,8 @@ public class WindController : MonoBehaviour
     private void Start()
     {
         _windActive = windActiveInit;
+        _windSpeed = SimulationController.Instance.GetActiveLabConfig().GetWindForce();
+
     }
 
     // FixedUpdate can be called multiple times per frame
@@ -58,10 +60,21 @@ public class WindController : MonoBehaviour
     void ApplyWindForce()
     {
         if(!_windActive) return;
-        // Apply wind force to all affected rigidbodies
         foreach (Rigidbody body in affectedBodies)
         {
-            body.AddForce(windSpeed, ForceMode.Force);
+            Vector3 newWindSpeed = _windSpeed / body.mass;
+            body.AddForce(newWindSpeed, ForceMode.Force);
+            
+            // Implement drag
+            float dragCoefficient = 1.2f; // Typical for a sphere, varies depending on the shape
+            float airDensity = SimulationController.Instance.GetActiveLabConfig().airDensity;
+            float area = 1 * 1; // Assuming a cube
+
+            // Calculate drag force: Fd = 1/2 * Cd * rho * A * v^2
+            Vector3 dragForce = 0.5f * dragCoefficient * airDensity * area * MathF.Pow(body.velocity.magnitude,2f) * -body.velocity.normalized;
+
+            // Apply drag force
+            body.AddForce(dragForce, ForceMode.Force);
         }
     }
 
@@ -82,9 +95,9 @@ public class WindController : MonoBehaviour
 
     void RotateWindIndicator()
     {
-        if (directionIndicator != null && windSpeed != Vector3.zero)
+        if (directionIndicator != null && _windSpeed != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(windSpeed);
+            Quaternion targetRotation = Quaternion.LookRotation(_windSpeed);
             directionIndicator.transform.rotation = Quaternion.Lerp(directionIndicator.transform.rotation, targetRotation, Time.deltaTime * 5);
         }
     }

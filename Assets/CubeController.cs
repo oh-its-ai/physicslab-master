@@ -127,4 +127,9 @@ public class CubeController : MonoBehaviour
     {
         _rigidBody.AddForce(new Vector3(force,0,0), ForceMode.Impulse);
     }
+
+    public void SetMass(float cubeMass)
+    {
+        _rigidBody.mass = cubeMass;
+    }
 }

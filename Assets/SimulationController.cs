@@ -5,6 +5,7 @@ using System.ComponentModel;
 using UnityEngine;
 
 using System.IO;
+using ScriptableObjects;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
@@ -19,8 +20,10 @@ using UnityEngine.UIElements;
 
 public class SimulationController : MonoBehaviour
 {
-    // CONFIG
-    public Vector3 windSpeed;
+    // Config
+    public ScriptableLab labConfig;
+    
+    
     public static SimulationController Instance { get; private set; }
     
     // Phases
@@ -30,11 +33,6 @@ public class SimulationController : MonoBehaviour
     public int graphScalar = 80;
     public int graphOffset = -10;
 
-    // CONFIG FEDER
-    [Header("Config Spring")]
-    public float springLength = 1f;
-    public float springConstant = 2f;
-
     private float _springCompression;
     
     [Header("Connections")]
@@ -42,9 +40,7 @@ public class SimulationController : MonoBehaviour
     public TextMesh protocolText;
     public Window_Graph windowGraphCube1Vel;
     public Window_Graph windowGraphCube2Vel;
-
     public SpringController spring1;
-    // CUBE 1 Stuff
     public CubeController cube1;
     public CubeController cube2;
     public TextMesh textMesh1;
@@ -75,7 +71,10 @@ public class SimulationController : MonoBehaviour
     {
         protocolText.text = "Start: " + 0;
         WindController.Instance.EventStartWind();
-        spring1.SetSpringLength(springLength);
+        spring1.SetSpringLength(GetActiveLabConfig().springLength);
+
+        cube1.SetMass(GetActiveLabConfig().cube1Mass);
+        cube2.SetMass(GetActiveLabConfig().cube2Mass);
     }
 
     // FixedUpdate can be called multiple times per frame
@@ -101,20 +100,24 @@ public class SimulationController : MonoBehaviour
 
     }
 
+    public ScriptableLab GetActiveLabConfig()
+    {
+        return labConfig;
+    }
     private void UpdateSpringForce()
     {
-        if (GetCubesDistance() <= springLength && _activePhase == Phase.Phase1)
+        if (GetCubesDistance() <= GetActiveLabConfig().springLength && _activePhase == Phase.Phase1)
         {
             ChangePhase(Phase.Phase2);
             WindController.Instance.EventStopWind();
             WriteProtocol("Impuls on impact: " + cube1.GetMass() * cube1.GetSpeed());
         }
-        if (GetCubesDistance() <= springLength)
+        if (GetCubesDistance() <= GetActiveLabConfig().springLength)
         {
             spring1.SetSpringLength(GetCubesDistance());
             
-            _springCompression = springLength - GetCubesDistance();
-            float force = springConstant * _springCompression;
+            _springCompression = GetActiveLabConfig().springLength - GetCubesDistance();
+            float force = GetActiveLabConfig().springConstant * _springCompression;
             cube1.AddForce(-force);
             cube2.AddForce(force);
         }
