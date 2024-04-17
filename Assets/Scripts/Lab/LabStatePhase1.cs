@@ -13,10 +13,8 @@ namespace Lab
 
         public override void StateUpdate()
         {
-            Debug.Log("aaaaa");
             if (Sim.GetCubesDistance() <= Sim.GetActiveLabConfig().springLength)
             {
-                
                 WindController.Instance.EventStopWind();
                 Sim.WriteProtocol("Impuls on impact: " + Sim.cube1.GetMass() * Sim.cube1.GetSpeed());
                 Sim.ChangeState();
