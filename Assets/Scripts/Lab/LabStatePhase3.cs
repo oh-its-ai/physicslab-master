@@ -2,24 +2,24 @@ using System;
 using UnityEngine;
 namespace Lab
 {
-    [CreateAssetMenu(fileName = "Config", menuName = "Phasen/Phase3", order = 1)]
+    [CreateAssetMenu(fileName = "Phase3_", menuName = "Phasen/Phase3", order = 1)]
     public class LabStatePhase3 : LabState
     {
         public override void OnStateEnter()
         {
-            Sim.WriteProtocol(stateName);
+            Sim.WriteProtocol(stateName + " has Started");
         }
 
         public override void StateUpdate()
         {
             // todo
-            // start wind
+            // teil 3 für ims LAB
         }
 
         public override void OnStateExit()
         {
             // stop wind
-            
+            // bö brudi
         }
     }
 }

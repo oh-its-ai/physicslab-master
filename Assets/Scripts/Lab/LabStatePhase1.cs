@@ -2,12 +2,12 @@ using System;
 using UnityEngine;
 namespace Lab
 {
-    [CreateAssetMenu(fileName = "Config", menuName = "Phasen/Phase1", order = 1)]
+    [CreateAssetMenu(fileName = "Phase1_", menuName = "Phasen/Phase1", order = 1)]
     public class LabStatePhase1 : LabState
     {
         public override void OnStateEnter()
         {
-            Sim.WriteProtocol(stateName);
+            Sim.WriteProtocol(stateName+ " has Started");
             WindController.Instance.EventStartWind();
         }
 
