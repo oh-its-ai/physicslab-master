@@ -55,6 +55,7 @@ public class CubeController : MonoBehaviour
         
         
         */
+        _timeSeries.Add(new List<float>() {SimulationController.Instance.GetSimTimeInSeconds(), _rigidBody.position.x, GetSpeed(), GetKineticEnergy(), GetImpuls()});
         UpdateText();
     }
 
@@ -88,8 +89,8 @@ public class CubeController : MonoBehaviour
     }
 
     private void WriteTimeSeriesToCSV() {
-        using (var streamWriter = new StreamWriter("time_series.csv")) {
-            streamWriter.WriteLine("t,x(t),v(t),F(t) (added)");
+        using (var streamWriter = new StreamWriter(name + "time_series.csv")) {
+            streamWriter.WriteLine("t,x(t),v(t),F(t),p(added)");
             
             foreach (List<float> timeStep in _timeSeries) {
                 streamWriter.WriteLine(string.Join(",", timeStep));

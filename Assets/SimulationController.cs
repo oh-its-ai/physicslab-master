@@ -24,7 +24,9 @@ public class SimulationController : MonoBehaviour
     // Config
     public ScriptableLab labConfig;
     public static SimulationController Instance { get; private set; }
-    
+
+    public Camera lab2Camera;
+    public Camera lab3Camera;
     
     // Phases
     public enum Phase {Phase1, Phase2, Phase3, Phase4};
@@ -144,6 +146,17 @@ public class SimulationController : MonoBehaviour
         protocolText.text = temp + newText;
     }
 
+    public float GetSimTimeInSeconds()
+    {
+        return _secondsSinceStart;
+    }
+
+    public void SetActiveSpring(bool newActive)
+    {
+        spring1.SetNewActive(newActive);
+        spring1.enabled = newActive;
+    }
+
     private void UpdateGraphs()
     {
         windowGraphCube1Vel.ShowGraph(valueListCube1Vel);
@@ -180,4 +193,10 @@ public class SimulationController : MonoBehaviour
     }
 
     #endregion
+
+    public void SwitchToLab3Camera()
+    {
+        lab2Camera.enabled = false;
+        lab3Camera.enabled = true;
+    }
 }

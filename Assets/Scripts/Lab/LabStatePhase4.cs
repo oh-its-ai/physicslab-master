@@ -2,20 +2,20 @@ using System;
 using UnityEngine;
 namespace Lab
 {
-    [CreateAssetMenu(fileName = "Phase3_", menuName = "Phasen/Phase3", order = 1)]
-    public class LabStatePhase3 : LabState
+    [CreateAssetMenu(fileName = "Phase4_", menuName = "Phasen/Phase4", order = 1)]
+    public class LabStatePhase4 : LabState
     {
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName + " has Started");
+            Sim.SwitchToLab3Camera();
+            Sim.SetActiveSpring(false);
         }
 
         public override void StateUpdate()
         {
-            if (Sim.GetSimTimeInSeconds() >= 7)
-            {
-                Sim.ChangeState();
-            }
+            // todo
+            // teil 3 für ims LAB
         }
 
         public override void OnStateExit()

@@ -35,6 +35,11 @@ public class SpringController : MonoBehaviour
         
     }
 
+    public void SetNewActive(bool newActive)
+    {
+        springLine.enabled = newActive;
+    }
+
     public void SetSpringLength(float newLength)
     {
         if (cubeLeft && cubeRight && springLine)
