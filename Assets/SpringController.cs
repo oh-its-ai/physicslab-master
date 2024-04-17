@@ -46,7 +46,7 @@ public class SpringController : MonoBehaviour
             // Assign the cube positions to the array
             var position = cubeLeft.transform.position;
             positions[0] = position;
-            positions[1] = position + new Vector3(newLength,0,0);
+            positions[1] = position + new Vector3(newLength,0,0) - new Vector3(.5f,0,0);
         
             // Set the positions on the LineRenderer
             springLine.SetPositions(positions);
@@ -63,9 +63,9 @@ public class SpringController : MonoBehaviour
         Vector3[] positions = new Vector3[2];
         
         // Assign the cube positions to the array
-        var position = cubeLeft.transform.position;
-        positions[0] = position;
-        positions[1] = position + new Vector3(length,0,0);
+        var position = cubeLeft.transform.position ;
+        positions[0] = position + new Vector3(.5f,0,0);
+        positions[1] = position + new Vector3(length,0,0) - new Vector3(.5f,0,0);
         
         // Set the positions on the LineRenderer
         springLine.SetPositions(positions);

@@ -1,3 +1,4 @@
+using Lab;
 using UnityEngine;
 
 namespace ScriptableObjects
@@ -7,6 +8,8 @@ namespace ScriptableObjects
     {
         public string labName = "LAB2 V1";
 
+        public LabState startingState;
+        
         [Header("Wind")] 
         public Vector3 windDirection = new Vector3(-1, 0, 0);
         public float windSpeed = 20;

@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: LAB2_Success
   m_EditorClassIdentifier: 
   labName: LAB2 V1
+  startingState: {fileID: 11400000, guid: b4221f441d035405c9df48cb47f6e511, type: 2}
   windDirection: {x: -1, y: 0, z: 0}
   windSpeed: 2000
   airDensity: 1.225
   springLength: 2
-  springConstant: -0.9
+  springConstant: -1.61
   cube1Mass: 100
   cube2Mass: 200

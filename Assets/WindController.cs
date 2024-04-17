@@ -23,11 +23,10 @@ public class WindController : MonoBehaviour
 
     public ParticleSystem windParticles;
     public List<Rigidbody> affectedBodies;
-   
+
+    #region Awake, Start
     private void Awake() 
     { 
-        // If there is an instance, and it's not me, delete myself.
-    
         if (Instance != null && Instance != this) 
         { 
             Destroy(this); 
@@ -44,18 +43,22 @@ public class WindController : MonoBehaviour
         _windSpeed = SimulationController.Instance.GetActiveLabConfig().GetWindForce();
 
     }
+    
 
-    // FixedUpdate can be called multiple times per frame
+    #endregion
+
+    #region Updates
+    
     void FixedUpdate()
     {
         if (affectedBodies.Count > 0)
         {
             ApplyWindForce();
         }
-
         RotateWindIndicator();
     }
-    
+
+    #endregion
     
     void ApplyWindForce()
     {
@@ -66,14 +69,15 @@ public class WindController : MonoBehaviour
             body.AddForce(newWindSpeed, ForceMode.Force);
             
             // Implement drag
-            float dragCoefficient = 1.2f; // Typical for a sphere, varies depending on the shape
+            float dragCoefficient = 1.2f; // for e box
             float airDensity = SimulationController.Instance.GetActiveLabConfig().airDensity;
-            float area = 1 * 1; // Assuming a cube
+            float area = 1 * 1; // Assuming a cube, i know, i know, i could leave it out but i dont want to
 
-            // Calculate drag force: Fd = 1/2 * Cd * rho * A * v^2
-            Vector3 dragForce = 0.5f * dragCoefficient * airDensity * area * MathF.Pow(body.velocity.magnitude,2f) * -body.velocity.normalized;
+            // Calculate drag force like in the BUUKS Fd = 1/2 * Cd * rho * A * v^2 * (de vel inverted and normalized "direction")
+            Vector3 dragForce = 0.5f * dragCoefficient * airDensity * area 
+                                * MathF.Pow(body.velocity.magnitude,2f) 
+                                * -body.velocity.normalized;
 
-            // Apply drag force
             body.AddForce(dragForce, ForceMode.Force);
         }
     }

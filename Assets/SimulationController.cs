@@ -5,6 +5,7 @@ using System.ComponentModel;
 using UnityEngine;
 
 using System.IO;
+using Lab;
 using ScriptableObjects;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
@@ -22,12 +23,13 @@ public class SimulationController : MonoBehaviour
 {
     // Config
     public ScriptableLab labConfig;
-    
-    
     public static SimulationController Instance { get; private set; }
+    
     
     // Phases
     public enum Phase {Phase1, Phase2, Phase3, Phase4};
+
+    private LabState _currentState;
     
     [Header("Config Graph")]
     public int graphScalar = 80;
@@ -70,9 +72,10 @@ public class SimulationController : MonoBehaviour
     private void Start()
     {
         protocolText.text = "Start: " + 0;
-        WindController.Instance.EventStartWind();
+        //WindController.Instance.EventStartWind();
         spring1.SetSpringLength(GetActiveLabConfig().springLength);
-
+        _currentState = GetActiveLabConfig().startingState;
+        if(_currentState) _currentState.OnStateEnter();
         cube1.SetMass(GetActiveLabConfig().cube1Mass);
         cube2.SetMass(GetActiveLabConfig().cube2Mass);
     }
@@ -95,9 +98,10 @@ public class SimulationController : MonoBehaviour
             valueListCube2Vel.Add(newValue2);
             UpdateGraphs();
         }
-
+        
+        if(_currentState) _currentState.StateUpdate();
         UpdateSpringForce();
-
+        
     }
 
     public ScriptableLab GetActiveLabConfig()
@@ -106,13 +110,8 @@ public class SimulationController : MonoBehaviour
     }
     private void UpdateSpringForce()
     {
-        if (GetCubesDistance() <= GetActiveLabConfig().springLength && _activePhase == Phase.Phase1)
-        {
-            ChangePhase(Phase.Phase2);
-            WindController.Instance.EventStopWind();
-            WriteProtocol("Impuls on impact: " + cube1.GetMass() * cube1.GetSpeed());
-        }
-        if (GetCubesDistance() <= GetActiveLabConfig().springLength)
+        
+        if (GetCubesDistance() <= (GetActiveLabConfig().springLength))
         {
             spring1.SetSpringLength(GetCubesDistance());
             
@@ -156,7 +155,7 @@ public class SimulationController : MonoBehaviour
         return Vector3.Distance(cube1.transform.position, cube2.transform.position);
     }
 
-    #region Phase Handling
+    #region Phase/State Handling
 
     public Phase GetActivePhase()
     {
@@ -166,6 +165,18 @@ public class SimulationController : MonoBehaviour
     private void ChangePhase(Phase newPhase)
     {
         _activePhase = newPhase;
+    }
+
+    private void StartState(LabState newState)
+    {
+        _currentState = newState;
+        _currentState.OnStateEnter();
+    }
+    public void ChangeState()
+    {
+        _currentState.OnStateExit();
+        _currentState = _currentState.nextState;
+        _currentState.OnStateEnter();
     }
 
     #endregion

@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using System.IO;
-using DefaultNamespace;
 
 /*
     Accelerates the cube to which it is attached, modelling an harmonic oscillator.
     Writes the position, velocity and acceleration of the cube to a CSV file.
     
     Remark: For use in "Physics Engines" module at ZHAW, part of physics lab
-    Author: kemf
+    Author: kemf, cavegde1
     Version: 1.0
 */
 public class CubeController : MonoBehaviour 
@@ -79,6 +76,7 @@ public class CubeController : MonoBehaviour
         return 0.5f * GetMass() * MathF.Pow(GetSpeed(),2f);
     }
 
+    // Speed is the velocity of the math formulas, so be careful my dear
     public float GetSpeed()
     {
         return Vector3.Magnitude(_rigidBody.velocity);
@@ -117,10 +115,7 @@ public class CubeController : MonoBehaviour
         {
             SimulationController.Instance.EventRegisterImpact(this);
             _impactRegistered = true;
-            // Assume this object also has a Rigidbody component.
-            
         }
-            
     }
 
     public void AddForce(float force)
@@ -132,4 +127,6 @@ public class CubeController : MonoBehaviour
     {
         _rigidBody.mass = cubeMass;
     }
+
+    
 }

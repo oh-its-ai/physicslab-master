@@ -1598,8 +1598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7044871b5c6bb4be99630578bd767467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labConfig: {fileID: 11400000, guid: 7e9055025e4b44ec782dd9802f53a6e5, type: 2}
-  windSpeed: {x: -1, y: 0, z: 0}
+  labConfig: {fileID: 11400000, guid: edabaffcf9cc34529ac0ac48352c973f, type: 2}
   graphScalar: 10
   graphOffset: 70
   protocolText: {fileID: 199351860}
@@ -1922,7 +1921,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 8bd070dc501364a888519a8b634e6fb6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1948,7 +1947,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.9186401
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -1997,7 +1996,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 1
+    textureMode: 0
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
