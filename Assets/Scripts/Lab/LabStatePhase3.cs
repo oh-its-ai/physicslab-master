@@ -18,8 +18,7 @@ namespace Lab
 
         public override void OnStateExit()
         {
-            // stop wind
-            // bö brudi
+            Sim.WriteProtocol(stateName+ " has Ended");
         }
     }
 }

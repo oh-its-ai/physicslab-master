@@ -24,6 +24,7 @@ namespace Lab
         public override void OnStateExit()
         {
             WindController.Instance.EventStopWind();
+            Sim.WriteProtocol(stateName+ " has Ended");
         }
     }
 }

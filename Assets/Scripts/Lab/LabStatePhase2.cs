@@ -22,7 +22,7 @@ namespace Lab
 
         public override void OnStateExit()
         {
-            // nix
+            Sim.WriteProtocol(stateName+ " has Ended");
         }
     }
 }
