@@ -25,9 +25,12 @@ namespace Lab
         
         public override void RegisterEvent(CubeController cube, GameObject target)
         {
+            Debug.Log("Cube"+ cube.name + " attached to target"+ target.name);
             // attach cube to target
-            cube.AttachTo(target);
-            cube.DisableRigidbody();
+            CubeController cube2 = target.GetComponent<CubeController>();
+            
+            //cube2.AttachTo(cube.gameObject);
+            //cube2.DisableRigidbody();
             Sim.ChangeState();
         }
     }

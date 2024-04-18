@@ -26,6 +26,9 @@ public class CubeController : MonoBehaviour
     private List<List<float>> _timeSeries;
 
     public TextMesh labelVelocity;
+
+    private float _lastSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,7 +68,7 @@ public class CubeController : MonoBehaviour
 
     private void UpdateText()
     {
-        
+        if(!labelVelocity) return;
         //labelVelocity.text = textSpeed + "\n" + textEkin;
         labelVelocity.text = "Speed(m/s): " + $"{GetSpeed():0.00}\n" +
                              "E_kin(N): "+  $"{GetKineticEnergy():0.00}\n"+
@@ -111,10 +114,11 @@ public class CubeController : MonoBehaviour
     
     private void OnCollisionEnter(Collision other)
     {
-        
-            SimulationController.Instance.EventRegisterImpact(this, other);
-            _impactRegistered = true;
-        
+        _lastSpeed = GetSpeed();
+        SimulationController.Instance.EventRegisterImpact(this, other);
+        _impactRegistered = true;
+            
+
     }
 
     public void AddForce(float force)
@@ -141,5 +145,10 @@ public class CubeController : MonoBehaviour
     public float GetTraegheitsmoment()
     {
         return 0.5f * GetMass() * MathF.Pow(GetSpeed(),2f);
+    }
+
+    public float GetLastSpeed()
+    {
+        return _lastSpeed;
     }
 }
