@@ -45,4 +45,10 @@ public class CubeLController : CubeController
         {
             throw new System.NotImplementedException();
         }
+
+        public void RotateAroundFixedJoint(float angleSpeed)
+        {
+            // rotate around fixed joint
+            transform.RotateAround(fixedJoint.transform.position, Vector3.forward, angleSpeed * Time.deltaTime);
+        }
 }

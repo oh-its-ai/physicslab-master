@@ -45,6 +45,7 @@ public class SimulationController : MonoBehaviour
     public Window_Graph windowGraphCube1Vel;
     public Window_Graph windowGraphCube2Vel;
     public SpringController spring1;
+    public SpringController springStart;
     public CubeController cube1;
     public CubeController cube2;
     public CubeLController cubeL;

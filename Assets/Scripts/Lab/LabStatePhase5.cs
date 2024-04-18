@@ -47,7 +47,7 @@ namespace Lab
         public override void StateUpdate()
         {
             // apply rotation to cubeL
-            _cubeL.transform.Rotate(Vector3.down, _angleSpeed * Time.deltaTime);
+            _cubeL.RotateAroundFixedJoint(_angleSpeed);
         }
 
         public override void OnStateExit()

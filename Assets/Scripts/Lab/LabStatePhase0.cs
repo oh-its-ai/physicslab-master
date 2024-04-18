@@ -11,8 +11,8 @@ using UnityEngine;
  */
 namespace Lab
 {
-    [CreateAssetMenu(fileName = "Phase1_", menuName = "Phasen/Phase1", order = 1)]
-    public class LabStatePhase1 : LabState
+    [CreateAssetMenu(fileName = "Phase0_", menuName = "Phasen/Phase0", order = 1)]
+    public class LabStatePhase0 : LabState
     {
         public Vector3 windDirection = new Vector3(1, 0, 0);
         public float windSpeed = 1f;
@@ -20,24 +20,17 @@ namespace Lab
         {
             Sim.WriteProtocol(stateName+ " has Started");
             WindController.Instance.SetWind(windDirection, windSpeed);
-            WindController.Instance.EventStartWind();
+            WindController.Instance.EventStopWind();
         }
 
         public override void StateUpdate()
         {
-            /*
-            if (Sim.GetCubesDistance() <= Sim.GetActiveLabConfig().springLength)
-            {
-                WindController.Instance.EventStopWind();
-                Sim.WriteProtocol("Impuls on impact: " + Sim.cube1.GetMass() * Sim.cube1.GetSpeed());
-                Sim.ChangeState();
-            }*/
+            
         }
 
         public override void OnStateExit()
         {
-            WindController.Instance.EventStopWind();
-            Sim.WriteProtocol(stateName+ " has Ended");
+            
         }
 
         public override void RegisterEvent(CubeController cube, GameObject target)
