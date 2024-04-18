@@ -22,5 +22,13 @@ namespace Lab
         {
             Sim.WriteProtocol(stateName+ " has Ended");
         }
+        
+        public override void RegisterEvent(CubeController cube, GameObject target)
+        {
+            // attach cube to target
+            cube.AttachTo(target);
+            cube.DisableRigidbody();
+            Sim.ChangeState();
+        }
     }
 }

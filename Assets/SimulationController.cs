@@ -47,6 +47,7 @@ public class SimulationController : MonoBehaviour
     public SpringController spring1;
     public CubeController cube1;
     public CubeController cube2;
+    public CubeLController cubeL;
     public TextMesh textMesh1;
     
     // Data
@@ -128,10 +129,9 @@ public class SimulationController : MonoBehaviour
         
     }
 
-    public void EventRegisterImpact(CubeController cube)
+    public void EventRegisterImpact(CubeController cube, Collision other)
     {
-        WindController.Instance.EventStopWind();
-        //WriteProtocol(cube.name);
+        if(_currentState) _currentState.RegisterEvent(cube, other.gameObject);
     }
 
     public float GetImpulsPower(CubeController giver)

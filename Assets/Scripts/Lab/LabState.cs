@@ -26,5 +26,7 @@ namespace Lab
         public abstract void OnStateEnter();
         public abstract void StateUpdate();
         public abstract void OnStateExit();
+        
+        public abstract void RegisterEvent(CubeController cube, GameObject target);
     }
 }

@@ -2329,6 +2329,7 @@ MonoBehaviour:
   spring1: {fileID: 1168327213}
   cube1: {fileID: 1377017609}
   cube2: {fileID: 1550352142}
+  cubeL: {fileID: 0}
   textMesh1: {fileID: 1372944902}
   valueListCube1Vel: 
   valueListCube2Vel: 
@@ -2365,7 +2366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29285fce12084413fbdc21993541020e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerCollision: 0
+  registerCollision: 1
   stopAtImpact: 0
   springConstant: 100
   dirVector: {x: 0, y: 0, z: 1}
@@ -2878,6 +2879,7 @@ GameObject:
   - component: {fileID: 1893627968}
   - component: {fileID: 1893627969}
   - component: {fileID: 1893627970}
+  - component: {fileID: 1893627971}
   m_Layer: 0
   m_Name: CUBE_3
   m_TagString: Untagged
@@ -2967,6 +2969,28 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &1893627971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893627966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e2c912e5774cdebdd46d9279405293, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registerCollision: 0
+  stopAtImpact: 0
+  springConstant: 0
+  dirVector: {x: 0, y: 0, z: 0}
+  labelVelocity: {fileID: 0}
+  fixedJoint: {fileID: 700953107}
+  cube1: {fileID: 401370802}
+  cube2: {fileID: 1464014480}
+  cube3: {fileID: 2127581181}
+  lengthSingleCube: 1
 --- !u!4 &2055952005 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7718190150541057816, guid: 45e43c424df2a42ce99a5dd6cc7cf9a6,

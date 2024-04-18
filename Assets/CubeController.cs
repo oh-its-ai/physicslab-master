@@ -111,12 +111,10 @@ public class CubeController : MonoBehaviour
     
     private void OnCollisionEnter(Collision other)
     {
-        CubeController temp;
-        if (other.gameObject.TryGetComponent<CubeController>(out temp) && registerCollision)
-        {
-            SimulationController.Instance.EventRegisterImpact(this);
+        
+            SimulationController.Instance.EventRegisterImpact(this, other);
             _impactRegistered = true;
-        }
+        
     }
 
     public void AddForce(float force)
@@ -129,5 +127,19 @@ public class CubeController : MonoBehaviour
         _rigidBody.mass = cubeMass;
     }
 
+
+    public void AttachTo(GameObject target)
+    {
+        transform.parent = target.transform;
+    }
+
+    public void DisableRigidbody()
+    {
+        _rigidBody.isKinematic = true;
+    }
     
+    public float GetTraegheitsmoment()
+    {
+        return 0.5f * GetMass() * MathF.Pow(GetSpeed(),2f);
+    }
 }

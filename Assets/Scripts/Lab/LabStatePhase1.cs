@@ -14,9 +14,12 @@ namespace Lab
     [CreateAssetMenu(fileName = "Phase1_", menuName = "Phasen/Phase1", order = 1)]
     public class LabStatePhase1 : LabState
     {
+        public Vector3 windDirection = new Vector3(1, 0, 0);
+        public float windSpeed = 1f;
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName+ " has Started");
+            WindController.Instance.SetWind(windDirection, windSpeed);
             WindController.Instance.EventStartWind();
         }
 
@@ -34,6 +37,11 @@ namespace Lab
         {
             WindController.Instance.EventStopWind();
             Sim.WriteProtocol(stateName+ " has Ended");
+        }
+
+        public override void RegisterEvent(CubeController cube, GameObject target)
+        {
+            //nah
         }
     }
 }

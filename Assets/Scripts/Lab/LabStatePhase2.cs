@@ -28,5 +28,10 @@ namespace Lab
         {
             Sim.WriteProtocol(stateName+ " has Ended");
         }
+
+        public override void RegisterEvent(CubeController cube, GameObject target)
+        {
+            //nah
+        }
     }
 }

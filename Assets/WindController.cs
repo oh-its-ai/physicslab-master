@@ -23,7 +23,12 @@ public class WindController : MonoBehaviour
 
     public ParticleSystem windParticles;
     public List<Rigidbody> affectedBodies;
-
+    
+    // Config
+    private float _airDensity = SimulationController.Instance.GetActiveLabConfig().airDensity; // kg/m^3
+    private float _dragCoefficient = 1.2f; // for e box
+    private float _area = 1 * 1; // Assuming a cube, i know, i know, i could leave it out but i dont want to
+    
     #region Awake, Start
     private void Awake() 
     { 
@@ -69,9 +74,9 @@ public class WindController : MonoBehaviour
             body.AddForce(newWindSpeed, ForceMode.Force);
             
             // Implement drag
-            float dragCoefficient = 1.2f; // for e box
-            float airDensity = SimulationController.Instance.GetActiveLabConfig().airDensity;
-            float area = 1 * 1; // Assuming a cube, i know, i know, i could leave it out but i dont want to
+            float dragCoefficient = _dragCoefficient; // for e box
+            float airDensity = _airDensity;
+            float area = _area; // Assuming a cube, i know, i know, i could leave it out but i dont want to
 
             // Calculate drag force like in the BUUKS Fd = 1/2 * Cd * rho * A * v^2 * (de vel inverted and normalized "direction")
             Vector3 dragForce = 0.5f * dragCoefficient * airDensity * area 
@@ -104,5 +109,10 @@ public class WindController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(_windSpeed);
             directionIndicator.transform.rotation = Quaternion.Lerp(directionIndicator.transform.rotation, targetRotation, Time.deltaTime * 5);
         }
+    }
+
+    public void SetWind(Vector3 windDirection, float windSpeed)
+    {
+        _windSpeed = windDirection.normalized * windSpeed;
     }
 }
