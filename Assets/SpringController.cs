@@ -37,18 +37,6 @@ public class SpringController : MonoBehaviour
     {
         
         UpdateSpringVisuals();
-        if(!cubeRight) return;
-        if(cubeLeft) return;
-        float springCompression = length - GetDistanceToCubeRight();
-        float force = springConstant * springCompression;
-
-
-        if (force < 0)
-        {
-            swingsUntilYeet = 0;
-            cubeRight = null;
-        }
-            
         
         /*
         float newDistance = GetDistanceToCubeRight();
@@ -68,27 +56,16 @@ public class SpringController : MonoBehaviour
             }
         }
         _lastDistance = newDistance;*/
-        if(swingsUntilYeet <= 0)
-        {
-            Debug.Log("Cube has been yeeted");
-            //cubeRight = null;
-        }
-        else
-        {
-            
-            if(cubeRight)
-                cubeRight.AddForce(IsCubeRightToTheRight() ? force : -force);
-            Debug.Log("Force: " + (IsCubeRightToTheRight() ? force : -force));
-        }
+       
         
     }
 
-    private float GetDistanceToCubeRight()
+    public float GetDistanceToCubeRight()
     {
         return Vector3.Distance(transform.position, cubeRight.transform.position);
     }
 
-    private bool IsCubeRightToTheRight()
+    public bool IsCubeRightToTheRight()
     {
         return cubeRight.transform.position.x > transform.position.x;
     }

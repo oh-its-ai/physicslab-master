@@ -16,21 +16,35 @@ namespace Lab
     {
         public Vector3 windDirection = new Vector3(1, 0, 0);
         public float windSpeed = 1f;
+        
+        public SpringController SpringStart => Sim.springStart;
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName+ " has Started");
-            WindController.Instance.SetWind(windDirection, windSpeed);
-            WindController.Instance.EventStopWind();
         }
 
         public override void StateUpdate()
         {
+            if(!SpringStart.cubeRight) return;
+            if(SpringStart.cubeLeft) return;
+            float springCompression = SpringStart.length - SpringStart.GetDistanceToCubeRight();
+            float force = SpringStart.springConstant * springCompression;
+
+
+            if (force < 0)
+            {
+                Debug.Log("Cube has been yeeted");
+                SpringStart.cubeRight = null;
+                Sim.ChangeState();
+            }
             
+            if(SpringStart.cubeRight)
+                SpringStart.cubeRight.AddForce(SpringStart.IsCubeRightToTheRight() ? force : -force);
         }
 
         public override void OnStateExit()
         {
-            
+            Sim.NextCamera();
         }
 
         public override void RegisterEvent(CubeController cube, GameObject target)

@@ -51,6 +51,8 @@ public class SimulationController : MonoBehaviour
     public CubeLController cubeL;
     public TextMesh textMesh1;
     
+    public List<Camera> cameras;
+    
     // Data
     private int _lastLoggedSecond = 0;
     private float _msSinceStart = 0f;
@@ -128,6 +130,25 @@ public class SimulationController : MonoBehaviour
 
     void OnApplicationQuit() {
         
+    }
+    
+    public void NextCamera()
+    {
+        foreach (var camera in cameras)
+        {
+            if (camera.enabled)
+            {
+                camera.enabled = false;
+                int index = cameras.IndexOf(camera);
+                if (index == cameras.Count - 1)
+                {
+                    cameras[0].enabled = true;
+                    return;
+                }
+                cameras[index + 1].enabled = true;
+                return;
+            }
+        }
     }
 
     public void EventRegisterImpact(CubeController cube, Collision other)
