@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 766005905f0d4eda99a60d30b3261ffd, type: 3}
   m_Name: Phase5_Rotate
   m_EditorClassIdentifier: 
-  stateName: rrrr
+  stateName: Rotatiooon
   nextState: {fileID: 0}

@@ -17,7 +17,7 @@ MonoBehaviour:
   windDirection: {x: -1, y: 0, z: 0}
   windSpeed: 2000
   airDensity: 1.225
-  springLength: 2
+  springLength: 4
   springConstant: -1.61
   cube1Mass: 100
   cube2Mass: 200

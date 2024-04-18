@@ -14,10 +14,7 @@ namespace Lab
     [CreateAssetMenu(fileName = "Phase0_", menuName = "Phasen/Phase0", order = 1)]
     public class LabStatePhase0 : LabState
     {
-        public Vector3 windDirection = new Vector3(1, 0, 0);
-        public float windSpeed = 1f;
-        
-        public SpringController SpringStart => Sim.springStart;
+        private SpringController SpringStart => Sim.springStart;
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName+ " has Started");

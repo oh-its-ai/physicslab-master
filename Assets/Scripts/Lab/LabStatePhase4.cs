@@ -8,7 +8,7 @@ namespace Lab
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName + " has Started");
-            Sim.SwitchToLab3Camera();
+            
             Sim.SetActiveSpring(false);
         }
 
@@ -18,6 +18,7 @@ namespace Lab
             // teil 3 für ims LAB
         }
 
+        
         public override void OnStateExit()
         {
             Sim.WriteProtocol(stateName+ " has Ended");
@@ -29,8 +30,8 @@ namespace Lab
             // attach cube to target
             CubeController cube2 = target.GetComponent<CubeController>();
             
-            //cube2.AttachTo(cube.gameObject);
-            //cube2.DisableRigidbody();
+            cube2.AttachTo(cube.gameObject);
+            cube2.DisableRigidbody();
             Sim.ChangeState();
         }
     }

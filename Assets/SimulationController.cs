@@ -7,6 +7,7 @@ using UnityEngine;
 using System.IO;
 using Lab;
 using ScriptableObjects;
+using TMPro;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
@@ -24,9 +25,6 @@ public class SimulationController : MonoBehaviour
     // Config
     public ScriptableLab labConfig;
     public static SimulationController Instance { get; private set; }
-
-    public Camera lab2Camera;
-    public Camera lab3Camera;
     
     // Phases
     public enum Phase {Phase1, Phase2, Phase3, Phase4};
@@ -50,7 +48,7 @@ public class SimulationController : MonoBehaviour
     public CubeController cube2;
     public CubeLController cubeL;
     public TextMesh textMesh1;
-    
+    public TextMeshProUGUI uiPhaseText;
     public List<Camera> cameras;
     
     // Data
@@ -78,10 +76,11 @@ public class SimulationController : MonoBehaviour
     private void Start()
     {
         protocolText.text = "Start: " + 0;
-        //WindController.Instance.EventStartWind();
+
         spring1.SetSpringLength(GetActiveLabConfig().springLength);
-        _currentState = GetActiveLabConfig().startingState;
-        if(_currentState) _currentState.OnStateEnter();
+        
+        StartState(GetActiveLabConfig().startingState);
+        
         cube1.SetMass(GetActiveLabConfig().cube1Mass);
         cube2.SetMass(GetActiveLabConfig().cube2Mass);
     }
@@ -190,17 +189,9 @@ public class SimulationController : MonoBehaviour
         return Vector3.Distance(cube1.transform.position, cube2.transform.position);
     }
 
-    #region Phase/State Handling
+    #region State Handling
 
-    public Phase GetActivePhase()
-    {
-        return _activePhase;
-    }
-
-    private void ChangePhase(Phase newPhase)
-    {
-        _activePhase = newPhase;
-    }
+   
 
     private void StartState(LabState newState)
     {
@@ -212,13 +203,9 @@ public class SimulationController : MonoBehaviour
         _currentState.OnStateExit();
         _currentState = _currentState.nextState;
         _currentState.OnStateEnter();
+        uiPhaseText.text = _currentState.stateName;
     }
 
     #endregion
-
-    public void SwitchToLab3Camera()
-    {
-        lab2Camera.enabled = false;
-        lab3Camera.enabled = true;
-    }
+    
 }
