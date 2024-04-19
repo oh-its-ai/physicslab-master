@@ -10,14 +10,10 @@ public class SpringController : MonoBehaviour
     public CubeController cubeRight;
     
     // CONFIG
-
-    public float stiffness = 169f;
-    public float damping = 26f;
-    public float mass = 1f;
+    
     public float length = 3f;
     public float springConstant = 1f;
     
-    public int swingsUntilYeet = 3;
     public bool letGoCubeRight = false;
 
     public LineRenderer springLine;
@@ -26,38 +22,10 @@ public class SpringController : MonoBehaviour
     private bool _cubeIsHeadingToSpring;
     private float _lastForce;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void FixedUpdate()
     {
-        
         UpdateSpringVisuals();
-        
-        /*
-        float newDistance = GetDistanceToCubeRight();
-        if (newDistance > _lastDistance)
-        {
-            if (_cubeIsHeadingToSpring)
-            {
-                _cubeIsHeadingToSpring = false;
-            }
-        }
-        else if(newDistance < _lastDistance)
-        {
-            if (!_cubeIsHeadingToSpring)
-            {
-                --swingsUntilYeet;
-                _cubeIsHeadingToSpring = true;
-            }
-        }
-        _lastDistance = newDistance;*/
-       
-        
     }
 
     public float GetDistanceToCubeRight()
@@ -77,22 +45,7 @@ public class SpringController : MonoBehaviour
 
     public void SetSpringLength(float newLength)
     {
-        length = newLength; 
-        return; // dont ask me why this is here but it is
-        if (cubeLeft && cubeRight && springLine)
-        {
-            
-            // Create an array to hold the positions
-            Vector3[] positions = new Vector3[2];
-        
-            // Assign the cube positions to the array
-            var position = cubeLeft ? cubeLeft.transform.position : transform.position;
-            positions[0] = position;
-            positions[1] = position + new Vector3(newLength,0,0) - new Vector3(.5f,0,0);
-        
-            // Set the positions on the LineRenderer
-            springLine.SetPositions(positions);
-        }
+        length = newLength;
     }
 
     public void ReleaseCubeRight()
@@ -107,6 +60,7 @@ public class SpringController : MonoBehaviour
         Vector3[] positions = new Vector3[2];
         if (!cubeRight || !springLine)
         {
+            return;
             Vector3 currentPos = springLine.GetPosition(1);
             Vector3 position = Vector3.zero;
             positions[0] = position;

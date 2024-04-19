@@ -149,7 +149,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 30423139}
-  m_Text: (0,0,0)
+  m_Text: 
   m_OffsetZ: 0
   m_CharacterSize: 0.1
   m_LineSpacing: 1
@@ -214,7 +214,7 @@ Transform:
   m_GameObject: {fileID: 30423139}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.422, y: 0.27183998, z: -0.599}
+  m_LocalPosition: {x: -0.28, y: 0.27183998, z: -0.27}
   m_LocalScale: {x: 0.108279996, y: 0.108279996, z: 0.108279996}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1609,7 +1609,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883189038}
-  m_Text: (0,0,0)
+  m_Text: 
   m_OffsetZ: 0
   m_CharacterSize: 0.1
   m_LineSpacing: 1
@@ -2225,12 +2225,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeLeft: {fileID: 1550352142}
   cubeRight: {fileID: 1377017609}
-  stiffness: 169
-  damping: 26
-  mass: 1
   length: 4
   springConstant: 1
-  swingsUntilYeet: 3
   letGoCubeRight: 0
   springLine: {fileID: 1753734633}
 --- !u!1 &1199192082
@@ -4994,12 +4990,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeLeft: {fileID: 0}
   cubeRight: {fileID: 1377017609}
-  stiffness: 169
-  damping: 26
-  mass: 1
-  length: 1.23
-  springConstant: 1.7
-  swingsUntilYeet: 1
+  length: 1.9
+  springConstant: 40
   letGoCubeRight: 1
   springLine: {fileID: 1921939926}
 --- !u!4 &2070503723

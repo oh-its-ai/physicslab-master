@@ -133,17 +133,12 @@ public class CubeController : MonoBehaviour
             }
         }
     }
-
-    public void AddForceImpulse(float force)
-    {
-        // bro listen, you dont need to take mass into account here
-        _rigidBody.AddForce(new Vector3(force,0,0), ForceMode.Impulse);
-    }
     
-    public void AddForceForce(float force)
+    
+    public void AddForce(float force)
     {
         // bro listen, you dont need to take mass into account here
-        _rigidBody.AddForce(new Vector3(force,0,0), ForceMode.Force);
+        _rigidBody.AddForce(new Vector3(force,0,0));
     }
 
     public void SetMass(float cubeMass)

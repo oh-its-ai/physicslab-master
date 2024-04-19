@@ -11,8 +11,8 @@ namespace Lab
     [CreateAssetMenu(fileName = "Phase2_", menuName = "Phasen/Phase2", order = 1)]
     public class LabStatePhase2 : LabState
     {
-        public float springLength;
-        public float springConstant;
+        public float SpringLength => Sim.GetActiveLabConfig().springLength;
+        public float SpringConstant => Sim.GetActiveLabConfig().springConstant;
         private float _springCompression;
         public override void OnStateEnter()
         {
@@ -23,17 +23,17 @@ namespace Lab
 
         public override void StateUpdate()
         {
-            if (Sim.GetCubesDistance() <= (springLength))
+            if (Sim.GetCubesDistance() <= (SpringLength))
             {
                 Sim.spring1.SetSpringLength(Sim.GetCubesDistance());
             
-                _springCompression = springLength - Sim.GetCubesDistance();
-                float force = springConstant * _springCompression;
-                Sim.cube1.AddForceForce(-force);
-                Sim.cube2.AddForceForce(force);
+                _springCompression = SpringLength - Sim.GetCubesDistance();
+                float force = SpringConstant * _springCompression;
+                Sim.cube1.AddForce(-force);
+                Sim.cube2.AddForce(force);
             }
             // registers if cube1 and the spring1 have parted their ways
-            if (Sim.GetCubesDistance() > springLength)
+            if (Sim.GetCubesDistance() > SpringLength)
             {
                 Sim.ChangeState();
             }

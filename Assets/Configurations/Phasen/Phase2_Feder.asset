@@ -14,5 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: Feder
   nextState: {fileID: 11400000, guid: b708a130d03f84e4aac96ea22bd7820a, type: 2}
-  springLength: 3.4
-  springConstant: -33.3

@@ -14,6 +14,8 @@ namespace Lab
     [CreateAssetMenu(fileName = "Phase0_", menuName = "Phasen/Phase0", order = 1)]
     public class LabStatePhase0 : LabState
     {
+        public float springLength;
+        public float springConstant;
         private SpringController SpringStart => Sim.springStart;
         public override void OnStateEnter()
         {
@@ -37,7 +39,7 @@ namespace Lab
             }
             
             if(SpringStart.cubeRight)
-                SpringStart.cubeRight.AddForceImpulse(SpringStart.IsCubeRightToTheRight() ? force : -force);
+                SpringStart.cubeRight.AddForce(SpringStart.IsCubeRightToTheRight() ? force : -force);
         }
 
         public override void OnStateExit()
