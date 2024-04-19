@@ -66,7 +66,7 @@ public class WindController : MonoBehaviour
         if(!_windActive) return;
         foreach (Rigidbody body in affectedBodies)
         {
-            Vector3 newWindForce = _windForce / body.mass;
+            Vector3 newWindForce = _windForce;
             body.AddForce(newWindForce, ForceMode.Force);
             
             // Implement drag

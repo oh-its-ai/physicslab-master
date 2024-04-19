@@ -15,4 +15,4 @@ MonoBehaviour:
   stateName: Wind stoss
   nextState: {fileID: 11400000, guid: e25bdbeba97c6440983f473f834b16d3, type: 2}
   windDirection: {x: -1, y: 0, z: 0}
-  windSpeed: 2000
+  windSpeed: 20

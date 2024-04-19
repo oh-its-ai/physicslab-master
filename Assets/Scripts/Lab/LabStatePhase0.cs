@@ -33,6 +33,7 @@ namespace Lab
                 Debug.Log("Cube has been yeeted");
                 SpringStart.cubeRight = null;
                 Sim.ChangeState();
+                
             }
             
             if(SpringStart.cubeRight)
@@ -41,6 +42,7 @@ namespace Lab
 
         public override void OnStateExit()
         {
+            Sim.WriteValues(Sim.cube1.GetCubeDataText() + " -> on release");
             Sim.NextCamera(1);
         }
 

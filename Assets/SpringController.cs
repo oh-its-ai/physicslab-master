@@ -78,7 +78,7 @@ public class SpringController : MonoBehaviour
     public void SetSpringLength(float newLength)
     {
         length = newLength; 
-        return;
+        return; // dont ask me why this is here but it is
         if (cubeLeft && cubeRight && springLine)
         {
             
@@ -114,9 +114,6 @@ public class SpringController : MonoBehaviour
             springLine.SetPositions(positions);
             return;
         }
-        
-        // Create an array to hold the positions
-        
         
         // Assign the cube positions to the array
         if (!cubeLeft)

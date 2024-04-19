@@ -12,11 +12,8 @@ using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 /*
-    Accelerates the cube to which it is attached, modelling an harmonic oscillator.
-    Writes the position, velocity and acceleration of the cube to a CSV file.
-    
-    Remark: For use in "Physics Engines" module at ZHAW, part of physics lab
-    Author: kemf
+    Controls the simulation, including the cubes, springs, and camera.
+    Author: cavegde1
     Version: 1.0
 */
 
@@ -25,9 +22,6 @@ public class SimulationController : MonoBehaviour
     // Config
     public ScriptableLab labConfig;
     public static SimulationController Instance { get; private set; }
-    
-    // Phases
-    public enum Phase {Phase1, Phase2, Phase3, Phase4};
 
     private LabState _currentState;
     
@@ -49,6 +43,7 @@ public class SimulationController : MonoBehaviour
     public TextMeshProUGUI uiPhaseText;
     public TextMeshProUGUI uiTimeText;
     public TextMeshProUGUI uiInfoText;
+    public TextMeshProUGUI uiValuesText;
     public List<Camera> cameras;
     
     // Data
@@ -66,7 +61,6 @@ public class SimulationController : MonoBehaviour
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
-    
         if (Instance != null && Instance != this) 
         { 
             Destroy(this); 
@@ -125,7 +119,7 @@ public class SimulationController : MonoBehaviour
     }
     private void UpdateSpringForce()
     {
-        
+        return; // disabled for now as it is not needed, I know I could remove it but I dont want to
         if (GetCubesDistance() <= (GetActiveLabConfig().springLength))
         {
             spring1.SetSpringLength(GetCubesDistance());
@@ -195,6 +189,13 @@ public class SimulationController : MonoBehaviour
         String temp = uiInfoText.text;
         String newText = "\n" + $"{_secondsSinceStart:0.00}" + ": " + text ;
         uiInfoText.text = temp + newText;
+    }
+    
+    public void WriteValues(String text)
+    {
+        String temp = uiValuesText.text;
+        String newText = "\n" + $"{_secondsSinceStart:0.00}" + ": " + text ;
+        uiValuesText.text = temp + newText;
     }
 
     public float GetSimTimeInSeconds()

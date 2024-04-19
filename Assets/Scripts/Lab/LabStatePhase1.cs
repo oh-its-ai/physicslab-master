@@ -37,6 +37,8 @@ namespace Lab
         public override void OnStateExit()
         {
             WindController.Instance.EventStopWind();
+            Sim.WriteValues(Sim.cube1.GetCubeDataText() + " -> on spring impact");
+
             Sim.WriteProtocol(stateName+ " has Ended");
         }
 

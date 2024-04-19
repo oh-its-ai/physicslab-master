@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using TMPro;
 
 /*
     Accelerates the cube to which it is attached, modelling an harmonic oscillator.
@@ -22,18 +23,22 @@ public class CubeController : MonoBehaviour
     public int springConstant; // N/m
     public Vector3 dirVector;
     private float _currentTimeStep; // s
+    private Vector3 _startingPosition;
     
     private List<List<float>> _timeSeries;
 
-    public TextMesh labelVelocity;
+    public TextMeshProUGUI infoText;
 
     private float _lastSpeed;
+    private Vector3 _previousPosition;
+    private float _totalDistance;
 
     // Start is called before the first frame update
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
         _timeSeries = new List<List<float>>();
+        _previousPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -44,6 +49,11 @@ public class CubeController : MonoBehaviour
 
     // FixedUpdate can be called multiple times per frame
     void FixedUpdate() {
+        float distanceThisFrame = Vector3.Distance(transform.position, _previousPosition);
+        _totalDistance += distanceThisFrame;
+        //Debug.Log("Distance this frame: " + distanceThisFrame.ToString() + "   Total Distance: " + _totalDistance.ToString());
+ 
+        _previousPosition = transform.position;
         /*var position = _rigidBody.position;
         var forceX = -position.x * springConstant * dirVector.x;
         var forceY = -position.y * springConstant * dirVector.y;
@@ -68,11 +78,12 @@ public class CubeController : MonoBehaviour
 
     private void UpdateText()
     {
-        if(!labelVelocity) return;
+        if(!infoText) return;
         //labelVelocity.text = textSpeed + "\n" + textEkin;
-        labelVelocity.text = "Speed(m/s): " + $"{GetSpeed():0.00}\n" +
-                             "E_kin(N): "+  $"{GetKineticEnergy():0.00}\n"+
-                             "Impuls: "+  $"{GetImpuls():0.00}\n";
+        infoText.text = name + "\n"+ 
+                        "Speed(m/s)(v): " + $"{GetSpeed():0.00}\n" +
+                        "E_kin(N): "+  $"{GetKineticEnergy():0.00}\n"+
+                        "Impuls(p): "+  $"{GetImpuls():0.00}\n";
     }
 
     public float GetKineticEnergy()
@@ -91,6 +102,18 @@ public class CubeController : MonoBehaviour
         return GetMass() * GetSpeed();
     }
 
+    public float GetDistanceTravelled()
+    {
+        return _totalDistance;
+    }
+
+    public String GetCubeDataText()
+    {
+        return name + ": p=" + $"{GetImpuls():0.00} kg/s |" 
+                           + " v=" + $"{GetSpeed():0.00} m/S |" 
+                           + " s=" + $"{GetDistanceTravelled():0.00} m |"
+                           + " E_kin=" + $"{GetKineticEnergy():0.00} N |";
+    }
     private void WriteTimeSeriesToCSV() {
         using (var streamWriter = new StreamWriter(name + "time_series.csv")) {
             streamWriter.WriteLine("t,x(t),v(t),F(t),p(added)");
@@ -117,12 +140,11 @@ public class CubeController : MonoBehaviour
         _lastSpeed = GetSpeed();
         SimulationController.Instance.EventRegisterImpact(this, other);
         _impactRegistered = true;
-            
-
     }
 
     public void AddForce(float force)
     {
+        // bro listen, you dont need to take mass into account here
         _rigidBody.AddForce(new Vector3(force,0,0), ForceMode.Impulse);
     }
 
@@ -130,8 +152,7 @@ public class CubeController : MonoBehaviour
     {
         _rigidBody.mass = cubeMass;
     }
-
-
+    
     public void AttachTo(GameObject target)
     {
         transform.parent = target.transform;
