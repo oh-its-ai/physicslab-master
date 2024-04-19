@@ -18,6 +18,7 @@ namespace Lab
 
         public override void StateUpdate()
         {
+            // registers if cube1 and the spring1 have parted their ways
             if (Sim.GetCubesDistance() > Sim.GetActiveLabConfig().springLength)
             {
                 Sim.ChangeState();

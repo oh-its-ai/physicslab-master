@@ -77,9 +77,11 @@ public class SpringController : MonoBehaviour
 
     public void SetSpringLength(float newLength)
     {
+        length = newLength; 
+        return;
         if (cubeLeft && cubeRight && springLine)
         {
-            length = newLength;
+            
             // Create an array to hold the positions
             Vector3[] positions = new Vector3[2];
         
@@ -102,18 +104,26 @@ public class SpringController : MonoBehaviour
     }
     private void UpdateSpringVisuals()
     {
-        
-        if ( !cubeRight || !springLine) return;
+        Vector3[] positions = new Vector3[2];
+        if (!cubeRight || !springLine)
+        {
+            Vector3 currentPos = springLine.GetPosition(1);
+            Vector3 position = Vector3.zero;
+            positions[0] = position;
+            positions[1] = position + Vector3.Lerp(currentPos, position - new Vector3(length,0,0), Time.deltaTime);
+            springLine.SetPositions(positions);
+            return;
+        }
         
         // Create an array to hold the positions
-        Vector3[] positions = new Vector3[2];
+        
         
         // Assign the cube positions to the array
         if (!cubeLeft)
         {
             Vector3 position = Vector3.zero;
             positions[0] = position;
-            positions[1] = position + new Vector3(GetDistanceToCubeRightWithNegatives(),0,0);
+            positions[1] = position + new Vector3(GetDistanceToCubeRightWithNegatives(),0,0) + new Vector3(.5f,0,0);;
         }
         else
         {
