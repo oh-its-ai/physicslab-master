@@ -120,15 +120,7 @@ public class SimulationController : MonoBehaviour
     private void UpdateSpringForce()
     {
         return; // disabled for now as it is not needed, I know I could remove it but I dont want to
-        if (GetCubesDistance() <= (GetActiveLabConfig().springLength))
-        {
-            spring1.SetSpringLength(GetCubesDistance());
-            
-            _springCompression = GetActiveLabConfig().springLength - GetCubesDistance();
-            float force = GetActiveLabConfig().springConstant * _springCompression;
-            cube1.AddForce(-force);
-            cube2.AddForce(force);
-        }
+        
     }
 
     void OnApplicationQuit() {

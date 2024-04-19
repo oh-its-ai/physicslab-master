@@ -49,25 +49,9 @@ public class CubeController : MonoBehaviour
 
     // FixedUpdate can be called multiple times per frame
     void FixedUpdate() {
-        float distanceThisFrame = Vector3.Distance(transform.position, _previousPosition);
+        var distanceThisFrame = Vector3.Distance(transform.position, _previousPosition);
         _totalDistance += distanceThisFrame;
-        //Debug.Log("Distance this frame: " + distanceThisFrame.ToString() + "   Total Distance: " + _totalDistance.ToString());
- 
         _previousPosition = transform.position;
-        /*var position = _rigidBody.position;
-        var forceX = -position.x * springConstant * dirVector.x;
-        var forceY = -position.y * springConstant * dirVector.y;
-        var forceZ = -position.z * springConstant * dirVector.z;
-        if (!(stopAtImpact && _impactRegistered))
-        {
-            _rigidBody.AddForce(new Vector3(forceX, forceY, forceZ));
-        }
-        
-        _currentTimeStep += Time.deltaTime;
-        _timeSeries.Add(new List<float>() {_currentTimeStep, _rigidBody.position.x, _rigidBody.velocity.x, forceX});
-        
-        
-        */
         _timeSeries.Add(new List<float>() {SimulationController.Instance.GetSimTimeInSeconds(), _rigidBody.position.x, GetSpeed(), GetKineticEnergy(), GetImpuls()});
         UpdateText();
     }
@@ -79,12 +63,13 @@ public class CubeController : MonoBehaviour
     private void UpdateText()
     {
         if(!infoText) return;
-        //labelVelocity.text = textSpeed + "\n" + textEkin;
         infoText.text = name + "\n"+ 
                         "Speed(m/s)(v): " + $"{GetSpeed():0.00}\n" +
                         "E_kin(N): "+  $"{GetKineticEnergy():0.00}\n"+
                         "Impuls(p): "+  $"{GetImpuls():0.00}\n";
     }
+
+    #region Get Attributes
 
     public float GetKineticEnergy()
     {
@@ -107,12 +92,36 @@ public class CubeController : MonoBehaviour
         return _totalDistance;
     }
 
+    public Vector3 GetVel()
+    {
+        return _rigidBody.velocity;
+    }
+
+    public float GetMass()
+    {
+        return _rigidBody.mass;
+    }
+    
+    public float GetTraegheitsmoment()
+    {
+        return 0.5f * GetMass() * MathF.Pow(GetSpeed(),2f);
+    }
+
+    public float GetLastSpeed()
+    {
+        return _lastSpeed;
+    }
+    
+    #endregion
+
+    #region Utilities
+
     public String GetCubeDataText()
     {
         return name + ": p=" + $"{GetImpuls():0.00} kg/s |" 
-                           + " v=" + $"{GetSpeed():0.00} m/S |" 
-                           + " s=" + $"{GetDistanceTravelled():0.00} m |"
-                           + " E_kin=" + $"{GetKineticEnergy():0.00} N |";
+               + " v=" + $"{GetSpeed():0.00} m/S |" 
+               + " s=" + $"{GetDistanceTravelled():0.00} m |"
+               + " E_kin=" + $"{GetKineticEnergy():0.00} N |";
     }
     private void WriteTimeSeriesToCSV() {
         using (var streamWriter = new StreamWriter(name + "time_series.csv")) {
@@ -125,27 +134,16 @@ public class CubeController : MonoBehaviour
         }
     }
 
-    public Vector3 GetVel()
-    {
-        return _rigidBody.velocity;
-    }
-
-    public float GetMass()
-    {
-        return _rigidBody.mass;
-    }
-    
-    private void OnCollisionEnter(Collision other)
-    {
-        _lastSpeed = GetSpeed();
-        SimulationController.Instance.EventRegisterImpact(this, other);
-        _impactRegistered = true;
-    }
-
-    public void AddForce(float force)
+    public void AddForceImpulse(float force)
     {
         // bro listen, you dont need to take mass into account here
         _rigidBody.AddForce(new Vector3(force,0,0), ForceMode.Impulse);
+    }
+    
+    public void AddForceForce(float force)
+    {
+        // bro listen, you dont need to take mass into account here
+        _rigidBody.AddForce(new Vector3(force,0,0), ForceMode.Force);
     }
 
     public void SetMass(float cubeMass)
@@ -163,13 +161,20 @@ public class CubeController : MonoBehaviour
         _rigidBody.isKinematic = true;
     }
     
-    public float GetTraegheitsmoment()
+    #endregion
+
+    
+
+    
+    
+    private void OnCollisionEnter(Collision other)
     {
-        return 0.5f * GetMass() * MathF.Pow(GetSpeed(),2f);
+        _lastSpeed = GetSpeed();
+        SimulationController.Instance.EventRegisterImpact(this, other);
+        _impactRegistered = true;
     }
 
-    public float GetLastSpeed()
-    {
-        return _lastSpeed;
-    }
+    
+    
+    
 }

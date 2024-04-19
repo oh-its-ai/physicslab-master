@@ -37,7 +37,7 @@ namespace Lab
             }
             
             if(SpringStart.cubeRight)
-                SpringStart.cubeRight.AddForce(SpringStart.IsCubeRightToTheRight() ? force : -force);
+                SpringStart.cubeRight.AddForceImpulse(SpringStart.IsCubeRightToTheRight() ? force : -force);
         }
 
         public override void OnStateExit()

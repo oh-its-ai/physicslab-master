@@ -17,23 +17,23 @@ namespace Lab
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName+ " has Started");
-            springLength = Sim.GetActiveLabConfig().springLength;
-            springConstant = Sim.GetActiveLabConfig().springConstant;
+            //springLength = Sim.GetActiveLabConfig().springLength;
+            //springConstant = Sim.GetActiveLabConfig().springConstant;
         }
 
         public override void StateUpdate()
         {
-            if (Sim.GetCubesDistance() <= (Sim.GetActiveLabConfig().springLength))
+            if (Sim.GetCubesDistance() <= (springLength))
             {
                 Sim.spring1.SetSpringLength(Sim.GetCubesDistance());
             
                 _springCompression = springLength - Sim.GetCubesDistance();
                 float force = springConstant * _springCompression;
-                Sim.cube1.AddForce(-force);
-                Sim.cube2.AddForce(force);
+                Sim.cube1.AddForceForce(-force);
+                Sim.cube2.AddForceForce(force);
             }
             // registers if cube1 and the spring1 have parted their ways
-            if (Sim.GetCubesDistance() > Sim.GetActiveLabConfig().springLength)
+            if (Sim.GetCubesDistance() > springLength)
             {
                 Sim.ChangeState();
             }
