@@ -15,7 +15,7 @@ using System.IO;
 public class WindController : MonoBehaviour
 {
     // CONFIG
-    private Vector3 _windSpeed;
+    private Vector3 _windForce;
     public bool windActiveInit = true;
     private bool _windActive = false;
     public GameObject directionIndicator;
@@ -45,7 +45,7 @@ public class WindController : MonoBehaviour
     private void Start()
     {
         _windActive = windActiveInit;
-        _windSpeed = SimulationController.Instance.GetActiveLabConfig().GetWindForce();
+        _windForce = SimulationController.Instance.GetActiveLabConfig().GetWindForce();
 
     }
     
@@ -70,15 +70,16 @@ public class WindController : MonoBehaviour
         if(!_windActive) return;
         foreach (Rigidbody body in affectedBodies)
         {
-            Vector3 newWindSpeed = _windSpeed / body.mass;
-            body.AddForce(newWindSpeed, ForceMode.Force);
+            Vector3 newWindForce = _windForce / body.mass;
+            body.AddForce(newWindForce, ForceMode.Force);
             
             // Implement drag
-            float dragCoefficient = _dragCoefficient; // for e box
-            float airDensity = _airDensity;
-            float area = _area; // Assuming a cube, i know, i know, i could leave it out but i dont want to
+            var dragCoefficient = _dragCoefficient; // for e box
+            var airDensity = _airDensity;
+            var area = _area; // Assuming a cube, i know, i know, i could leave it out but i dont want to
 
-            // Calculate drag force like in the BUUKS Fd = 1/2 * Cd * rho * A * v^2 * (de vel inverted and normalized "direction")
+            // Calculate drag force like in the BUUKS
+            // Fd = 1/2 * Cd * rho * A * v^2 * (de vel inverted and normalized "direction")
             Vector3 dragForce = 0.5f * dragCoefficient * airDensity * area 
                                 * MathF.Pow(body.velocity.magnitude,2f) 
                                 * -body.velocity.normalized;
@@ -104,15 +105,15 @@ public class WindController : MonoBehaviour
 
     void RotateWindIndicator()
     {
-        if (directionIndicator != null && _windSpeed != Vector3.zero)
+        if (directionIndicator != null && _windForce != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(_windSpeed);
+            Quaternion targetRotation = Quaternion.LookRotation(_windForce);
             directionIndicator.transform.rotation = Quaternion.Lerp(directionIndicator.transform.rotation, targetRotation, Time.deltaTime * 5);
         }
     }
 
     public void SetWind(Vector3 windDirection, float windSpeed)
     {
-        _windSpeed = windDirection.normalized * windSpeed;
+        _windForce = windDirection.normalized * windSpeed;
     }
 }

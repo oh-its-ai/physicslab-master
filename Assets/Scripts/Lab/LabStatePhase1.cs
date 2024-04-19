@@ -25,7 +25,7 @@ namespace Lab
 
         public override void StateUpdate()
         {
-            
+            // registers if cube1 and the spring1 have collided
             if (Sim.GetCubesDistance() <= Sim.GetActiveLabConfig().springLength)
             {
                 WindController.Instance.EventStopWind();

@@ -27,7 +27,7 @@ namespace Lab
         public override void OnStateExit()
         {
             Sim.WriteProtocol(stateName+ " has Ended");
-            Sim.NextCamera();
+            Sim.NextCamera(0);
         }
 
         public override void RegisterEvent(CubeController cube, GameObject target)

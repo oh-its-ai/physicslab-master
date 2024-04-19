@@ -59,6 +59,11 @@ public class SimulationController : MonoBehaviour
     public List<int> valueListCube2Vel = new List<int>() {};
 
     private Phase _activePhase = Phase.Phase1;
+    
+    // Camera stuff
+    private Transform _targetCameraTransform;
+    private int _currentCameraIndex;
+
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
@@ -106,8 +111,10 @@ public class SimulationController : MonoBehaviour
         
         if(_currentState) _currentState.StateUpdate();
         UpdateSpringForce();
-        
+        UpdateCameraTransform();
     }
+
+    
 
     public ScriptableLab GetActiveLabConfig()
     {
@@ -130,9 +137,14 @@ public class SimulationController : MonoBehaviour
     void OnApplicationQuit() {
         
     }
-    
-    public void NextCamera()
+
+    #region Camera
+    IEnumerator DelayedNextCamera(float delay)
     {
+        yield return new WaitForSeconds(delay);
+        _currentCameraIndex++;
+        _targetCameraTransform = cameras[_currentCameraIndex].transform;
+        /*
         foreach (var camera in cameras)
         {
             if (camera.enabled)
@@ -142,13 +154,28 @@ public class SimulationController : MonoBehaviour
                 if (index == cameras.Count - 1)
                 {
                     cameras[0].enabled = true;
-                    return;
+                    yield break;
                 }
                 cameras[index + 1].enabled = true;
-                return;
+                yield break;
             }
-        }
+        }*/
     }
+    
+    private void UpdateCameraTransform()
+    {
+        // lerp camera to target
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, _targetCameraTransform.position, Time.deltaTime);
+        Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, _targetCameraTransform.rotation, Time.deltaTime);
+    }
+    
+    public void NextCamera(float delay)
+    {
+        StartCoroutine(DelayedNextCamera(delay));
+    }
+
+    #endregion
+    
 
     public void EventRegisterImpact(CubeController cube, Collision other)
     {
