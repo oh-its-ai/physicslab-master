@@ -39,7 +39,6 @@ public class SimulationController : MonoBehaviour
     
     [Header("Connections")]
     // GameObjects
-    public TextMesh protocolText;
     public Window_Graph windowGraphCube1Vel;
     public Window_Graph windowGraphCube2Vel;
     public SpringController spring1;
@@ -47,8 +46,9 @@ public class SimulationController : MonoBehaviour
     public CubeController cube1;
     public CubeController cube2;
     public CubeLController cubeL;
-    public TextMesh textMesh1;
     public TextMeshProUGUI uiPhaseText;
+    public TextMeshProUGUI uiTimeText;
+    public TextMeshProUGUI uiInfoText;
     public List<Camera> cameras;
     
     // Data
@@ -58,7 +58,6 @@ public class SimulationController : MonoBehaviour
     public List<int> valueListCube1Vel = new List<int>() {};
     public List<int> valueListCube2Vel = new List<int>() {};
 
-    private Phase _activePhase = Phase.Phase1;
     
     // Camera stuff
     private Transform _targetCameraTransform;
@@ -80,7 +79,7 @@ public class SimulationController : MonoBehaviour
 
     private void Start()
     {
-        protocolText.text = "Start: " + 0;
+        //protocolText.text = "Start: " + 0;
 
         spring1.SetSpringLength(GetActiveLabConfig().springLength);
         
@@ -93,10 +92,7 @@ public class SimulationController : MonoBehaviour
     // FixedUpdate can be called multiple times per frame
     void FixedUpdate()
     {
-        _msSinceStart += Time.deltaTime;
-        _secondsSinceStart = _msSinceStart % 60;
-   
-        textMesh1.text = "Time(s): " + $"{_secondsSinceStart:0.00}";
+        UpdateTimeWithUI();
 
         int secondsSinceStartInt = (int)_secondsSinceStart;
         if (secondsSinceStartInt > _lastLoggedSecond)
@@ -114,7 +110,14 @@ public class SimulationController : MonoBehaviour
         UpdateCameraTransform();
     }
 
-    
+    private void UpdateTimeWithUI()
+    {
+        _msSinceStart += Time.deltaTime;
+        _secondsSinceStart = _msSinceStart % 60;
+   
+        uiTimeText.text = "Time(s): " + $"{_secondsSinceStart:0.00}";
+    }
+
 
     public ScriptableLab GetActiveLabConfig()
     {
@@ -189,9 +192,9 @@ public class SimulationController : MonoBehaviour
 
     public void WriteProtocol(String text)
     {
-        String temp = protocolText.text;
+        String temp = uiInfoText.text;
         String newText = "\n" + $"{_secondsSinceStart:0.00}" + ": " + text ;
-        protocolText.text = temp + newText;
+        uiInfoText.text = temp + newText;
     }
 
     public float GetSimTimeInSeconds()

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
-using System.IO;
-
 /*
-    Accelerates GOs like wind
+    Accelerates Cubes like wind
     
     Author: cavegde1
     Version: 1.0
@@ -100,12 +96,12 @@ public class WindController : MonoBehaviour
         if(_windActive)
             SimulationController.Instance.WriteProtocol("Wind stopped.");
         _windActive = false;
-        windParticles.Pause();
+        windParticles.Stop();
     }
 
     void RotateWindIndicator()
     {
-        if (directionIndicator != null && _windForce != Vector3.zero)
+        if (directionIndicator && _windForce != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(_windForce);
             directionIndicator.transform.rotation = Quaternion.Lerp(directionIndicator.transform.rotation, targetRotation, Time.deltaTime * 5);
