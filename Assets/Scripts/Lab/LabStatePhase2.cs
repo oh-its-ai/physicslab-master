@@ -25,12 +25,18 @@ namespace Lab
         {
             if (Sim.GetCubesDistance() <= (SpringLength))
             {
+                // todo add de "Normal Kraft"
+                // todo fix impulse calculation
                 Sim.spring1.SetSpringLength(Sim.GetCubesDistance());
             
                 _springCompression = SpringLength - Sim.GetCubesDistance();
                 float force = SpringConstant * _springCompression;
-                Sim.cube1.AddForce(-force);
-                Sim.cube2.AddForce(force);
+                float forceCube1 = force/Sim.cube1.GetMass(); // * (100f/ Sim.cube1.GetMass());
+                float forceCube2 = force/Sim.cube2.GetMass(); //* (100f/ Sim.cube2.GetMass());
+                //Sim.cube1.AddForce(-forceCube1);
+                //Sim.cube2.AddForce(forceCube2);
+                Sim.cube1.GetRidgidBody().AddForce(new Vector3(-forceCube1,0,0), ForceMode.Acceleration);
+                Sim.cube2.GetRidgidBody().AddForce(new Vector3(forceCube2,0,0), ForceMode.Acceleration);
             }
             // registers if cube1 and the spring1 have parted their ways
             if (Sim.GetCubesDistance() > SpringLength)

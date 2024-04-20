@@ -169,7 +169,9 @@ public class CubeController : MonoBehaviour
         _impactRegistered = true;
     }
 
-    
-    
-    
+
+    public Rigidbody GetRidgidBody()
+    {
+        return _rigidBody;
+    }
 }

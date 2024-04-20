@@ -100,7 +100,6 @@ public class SimulationController : MonoBehaviour
         }
         
         if(_currentState) _currentState.StateUpdate();
-        UpdateSpringForce();
         UpdateCameraTransform();
     }
 
