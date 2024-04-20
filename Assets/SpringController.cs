@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -9,6 +10,8 @@ public class SpringController : MonoBehaviour
     public CubeController cubeLeft;
     public CubeController cubeRight;
     
+    public GameObject middle;
+    
     // CONFIG
     
     public float length = 3f;
@@ -17,16 +20,58 @@ public class SpringController : MonoBehaviour
     public bool letGoCubeRight = false;
 
     public LineRenderer springLine;
+    public LineRenderer middleLine;
     private float _lastDistance;
 
     private bool _cubeIsHeadingToSpring;
     private float _lastForce;
+    private Vector3 _newSpringMiddle;
+    private Vector3 _initMiddle;
+
+    private void Start()
+    {
+        if (middle)
+        {
+            Vector3 springMiddle = (cubeLeft.transform.position + cubeRight.transform.position) / 2;
+            float cubeDistanceCubeLtoCuber = Vector3.Distance(cubeLeft.transform.position, cubeRight.transform.position);
+            if (cubeDistanceCubeLtoCuber > length)
+            {
+                springMiddle = cubeLeft.transform.position + new Vector3(length/2, 0, 0);
+            }
+            middle.transform.position = springMiddle;
+            _initMiddle = springMiddle;
+        }
+    }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        UpdateSpringMiddle();
         UpdateSpringVisuals();
     }
+
+    private void UpdateSpringMiddle()
+    {
+        if (middle)
+        {
+            Vector3 springMiddle = (cubeLeft.transform.position + cubeRight.transform.position) / 2;
+            float cubeDistanceCubeLtoCuber = Vector3.Distance(cubeLeft.transform.position, cubeRight.transform.position);
+            if (cubeDistanceCubeLtoCuber > length)
+            {
+                springMiddle = cubeLeft.transform.position + new Vector3(length/2, 0, 0);
+            }
+            middle.transform.position = springMiddle;
+            if (middleLine)
+            {
+                Vector3[] positions = new Vector3[2];
+                Vector3 position = _initMiddle;
+                positions[0] = position;
+                positions[1] = springMiddle;
+                middleLine.SetPositions(positions);
+            }
+        }
+    }
+
 
     public float GetDistanceToCubeRight()
     {
@@ -74,7 +119,7 @@ public class SpringController : MonoBehaviour
         {
             Vector3 position = Vector3.zero;
             positions[0] = position;
-            positions[1] = position + new Vector3(GetDistanceToCubeRightWithNegatives(),0,0) + new Vector3(.5f,0,0);;
+            positions[1] = position + new Vector3(GetDistanceToCubeRightWithNegatives(),0,0) + new Vector3(.5f,0,0);
         }
         else
         {

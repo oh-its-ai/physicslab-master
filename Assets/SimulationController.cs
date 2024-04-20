@@ -57,6 +57,7 @@ public class SimulationController : MonoBehaviour
     // Camera stuff
     private Transform _targetCameraTransform;
     private int _currentCameraIndex;
+    private bool _updateGraphs = true;
 
     private void Awake() 
     { 
@@ -92,10 +93,7 @@ public class SimulationController : MonoBehaviour
         if (secondsSinceStartInt > _lastLoggedSecond)
         {
             _lastLoggedSecond = (int)_secondsSinceStart;
-            int newValue = ((int)(graphScalar * cube1.GetVel().x)) + graphOffset;
-            int newValue2 = ((int)(graphScalar * cube2.GetVel().x)) + graphOffset;
-            valueListCube1Vel.Add(newValue);
-            valueListCube2Vel.Add(newValue2);
+            
             UpdateGraphs();
         }
         
@@ -132,22 +130,6 @@ public class SimulationController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         _currentCameraIndex++;
         _targetCameraTransform = cameras[_currentCameraIndex].transform;
-        /*
-        foreach (var camera in cameras)
-        {
-            if (camera.enabled)
-            {
-                camera.enabled = false;
-                int index = cameras.IndexOf(camera);
-                if (index == cameras.Count - 1)
-                {
-                    cameras[0].enabled = true;
-                    yield break;
-                }
-                cameras[index + 1].enabled = true;
-                yield break;
-            }
-        }*/
     }
     
     private void UpdateCameraTransform()
@@ -157,6 +139,10 @@ public class SimulationController : MonoBehaviour
         Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, _targetCameraTransform.rotation, Time.deltaTime);
     }
     
+    public void SetUpdateGraphs(bool update)
+    {
+        _updateGraphs = update;
+    }
     public void NextCamera(float delay)
     {
         StartCoroutine(DelayedNextCamera(delay));
@@ -202,6 +188,11 @@ public class SimulationController : MonoBehaviour
 
     private void UpdateGraphs()
     {
+        if(!_updateGraphs) return;
+        int newValue = ((int)(graphScalar * cube1.GetVel().x)) + graphOffset;
+        int newValue2 = ((int)(graphScalar * cube2.GetVel().x)) + graphOffset;
+        valueListCube1Vel.Add(newValue);
+        valueListCube2Vel.Add(newValue2);
         windowGraphCube1Vel.ShowGraph(valueListCube1Vel);
         windowGraphCube2Vel.ShowGraph(valueListCube2Vel);
     }

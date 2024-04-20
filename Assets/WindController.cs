@@ -21,7 +21,7 @@ public class WindController : MonoBehaviour
     public List<Rigidbody> affectedBodies;
     
     // Config
-    private float _airDensity = SimulationController.Instance.GetActiveLabConfig().airDensity; // kg/m^3
+    private float _airDensity = SimulationController.Instance.GetActiveLabConfig().MediumDensity; // kg/m^3
     private float _dragCoefficient = 1.2f; // for e box
     private float _area = 1 * 1; // Assuming a cube, i know, i know, i could leave it out but i dont want to
     
@@ -69,17 +69,25 @@ public class WindController : MonoBehaviour
             Vector3 newWindForce = _windForce;
             body.AddForce(newWindForce, ForceMode.Force);
             
-            // Implement drag
-            var dragCoefficient = _dragCoefficient; // for e box
-            var airDensity = _airDensity;
-            var area = _area; // Assuming a cube, i know, i know, i could leave it out but i dont want to
+            ApplyWindresistance();
+        }
+    }
+    
+    void ApplyWindresistance()
+    {
+        // Implement drag
+        var dragCoefficient = _dragCoefficient; // for e box
+        var airDensity = _airDensity;
+        var area = _area; // Assuming a cube, i know, i know, i could leave it out but i dont want to
 
-            // Calculate drag force like in the BUUKS
-            // Fd = 1/2 * Cd * rho * A * v^2 * (de vel inverted and normalized "direction")
-            Vector3 dragForce = 0.5f * dragCoefficient * airDensity * area 
-                                * MathF.Pow(body.velocity.magnitude,2f) 
-                                * -body.velocity.normalized;
+        // Calculate drag force like in the BUUKS
+        // Fd = 1/2 * Cd * rho * A * v^2 * (de vel inverted and normalized "direction")
+        Vector3 dragForce = 0.5f * dragCoefficient * airDensity * area 
+                            * MathF.Pow(_windForce.magnitude,2f) 
+                            * -_windForce.normalized;
 
+        foreach (Rigidbody body in affectedBodies)
+        {
             body.AddForce(dragForce, ForceMode.Force);
         }
     }

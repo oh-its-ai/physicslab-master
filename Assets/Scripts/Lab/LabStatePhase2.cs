@@ -11,8 +11,8 @@ namespace Lab
     [CreateAssetMenu(fileName = "Phase2_", menuName = "Phasen/Phase2", order = 1)]
     public class LabStatePhase2 : LabState
     {
-        public float SpringLength => Sim.GetActiveLabConfig().springLength;
-        public float SpringConstant => Sim.GetActiveLabConfig().springConstant;
+        public float SpringLength => Sim.GetActiveLabConfig().springLength; // m
+        public float SpringConstant => Sim.GetActiveLabConfig().springConstant; // N/m
         private float _springCompression;
         public override void OnStateEnter()
         {

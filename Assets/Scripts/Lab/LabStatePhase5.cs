@@ -19,6 +19,7 @@ namespace Lab
         private float _angleSpeed = 0;
         public override void OnStateEnter()
         {
+            Sim.SetUpdateGraphs(false);
             _cubeL = Sim.cubeL;
             _cube2 = Sim.cube2;
             //Sim.WriteProtocol(stateName + " has Started");

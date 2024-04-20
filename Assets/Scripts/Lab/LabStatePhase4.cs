@@ -29,7 +29,7 @@ namespace Lab
             Debug.Log("Cube"+ cube.name + " attached to target"+ target.name);
             // attach cube to target
             CubeController cube2 = target.GetComponent<CubeController>();
-            
+
             cube2.AttachTo(cube.gameObject);
             cube2.DisableRigidbody();
             Sim.ChangeState();

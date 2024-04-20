@@ -11,20 +11,61 @@ namespace ScriptableObjects
         public LabState startingState;
         
         [Header("Wind")] 
-        public Vector3 windDirection = new Vector3(-1, 0, 0);
-        public float windSpeed = 20;
-        public float airDensity = 1.225f;
+        [Tooltip("Wind direction in m/s")]
+        public Vector3 windDirection = new Vector3(-1, 0, 0); // Vector m/s
+        [Tooltip("Wind speed in m/s")]
+        public float windSpeed = 20; // m/s
+        [Tooltip("Medium density in kg/m^3 (Air: 1.225, Water: 1000, Oil: 900, Honey: 1400)")]
+        public Medium medium = Medium.Air;
+        public float MediumDensity => GetMediumDensity();
+
         
-        [Header("Spring")] 
-        public float springLength = 1f;
-        public float springConstant = 2f;
+        
+        [Header("Spring Start")]
+        [Tooltip("Spring length in meters.")]
+        public float springStartLength = 1f; // m
+        [Tooltip("Spring constant in N/m")]
+        public float springStartConstant = 2f; // N/m
+        
+        [Header("Spring 1")] 
+        [Tooltip("Spring length in meters.")]
+        public float springLength = 1f; // m
+        [Tooltip("Spring constant in N/m")]
+        public float springConstant = 2f; // N/m
         
         [Header("Cube 1")]
-        public float cube1Mass = 100;
+        [Tooltip("Cube 1 mass in kg.")]
+        public float cube1Mass = 100; // kg
         
         [Header("Cube 2")]
-        public float cube2Mass = 200;
+        [Tooltip("Cube 2 mass in kg.")]
+        public float cube2Mass = 200; // kg
 
+        public enum Medium
+        {
+            Air,
+            Water,
+            Oil,
+            Honey
+        }
+        
+        private float GetMediumDensity()
+        {
+            switch (medium)
+            {
+                case Medium.Air:
+                    return 1.225f;
+                case Medium.Water:
+                    return 1000f;
+                case Medium.Oil:
+                    return 900f;
+                case Medium.Honey:
+                    return 1400f;
+                default:
+                    return 1.225f;
+            }
+        }
+        
         public Vector3 GetWindForce()
         {
             return windDirection * windSpeed;

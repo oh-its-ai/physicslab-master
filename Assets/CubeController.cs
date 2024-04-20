@@ -79,7 +79,7 @@ public class CubeController : MonoBehaviour
     // Speed is the velocity of the math formulas, so be careful my dear
     public float GetSpeed()
     {
-        return Vector3.Magnitude(_rigidBody.velocity);
+        return _rigidBody.velocity.x;
     }
 
     public float GetImpuls()
@@ -110,6 +110,21 @@ public class CubeController : MonoBehaviour
     public float GetLastSpeed()
     {
         return _lastSpeed;
+    }
+    
+    public float GetWeight()
+    {
+        return GetMass() * Physics.gravity.y;
+    }
+    
+    public float GetNormalForce(float normal)
+    {
+        return GetMass() * normal;
+    }
+    
+    public Vector3 GetNormalForceVector3(Vector3 normal)
+    {
+        return GetMass() * normal;
     }
     
     #endregion
