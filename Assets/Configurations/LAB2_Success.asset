@@ -16,7 +16,9 @@ MonoBehaviour:
   startingState: {fileID: 11400000, guid: f23212353162545358aaa0480caa1e12, type: 2}
   windDirection: {x: -1, y: 0, z: 0}
   windSpeed: 0.5
-  airDensity: 1.225
+  medium: 0
+  springStartLength: 1.9
+  springStartConstant: 40
   springLength: 3
   springConstant: -109
   cube1Mass: 100

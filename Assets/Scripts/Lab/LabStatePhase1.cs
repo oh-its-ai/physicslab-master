@@ -25,6 +25,10 @@ namespace Lab
 
         public override void StateUpdate()
         {
+            // apply wind resistance to the cubes
+            WindController.Instance.ApplyWindresistance(Sim.cube1.GetRidgidBody());
+            WindController.Instance.ApplyWindresistance(Sim.cube2.GetRidgidBody());
+            
             // registers if cube1 and the spring1 have collided
             if (Sim.GetCubesDistance() <= Sim.GetActiveLabConfig().springLength)
             {

@@ -12,6 +12,10 @@ namespace Lab
 
         public override void StateUpdate()
         {
+            // apply wind resistance to the cubes
+            WindController.Instance.ApplyWindresistance(Sim.cube1.GetRidgidBody());
+            WindController.Instance.ApplyWindresistance(Sim.cube2.GetRidgidBody());
+            
             if (Sim.GetSimTimeInSeconds() >= 7)
             {
                 Sim.ChangeState();

@@ -68,12 +68,19 @@ public class WindController : MonoBehaviour
         {
             Vector3 newWindForce = _windForce;
             body.AddForce(newWindForce, ForceMode.Force);
-            
-            ApplyWindresistance();
+            ApplyWindresistance(body);
         }
     }
     
-    void ApplyWindresistance()
+    public void ApplyWindForceToBody(Rigidbody body)
+    {
+        if(!_windActive) return;
+        Vector3 newWindForce = _windForce;
+        body.AddForce(newWindForce, ForceMode.Force);
+        ApplyWindresistance(body);
+    }
+    
+    public void ApplyWindresistance(Rigidbody body)
     {
         // Implement drag
         var dragCoefficient = _dragCoefficient; // for e box
@@ -86,10 +93,9 @@ public class WindController : MonoBehaviour
                             * MathF.Pow(_windForce.magnitude,2f) 
                             * -_windForce.normalized;
 
-        foreach (Rigidbody body in affectedBodies)
-        {
-            body.AddForce(dragForce, ForceMode.Force);
-        }
+        
+        body.AddForce(dragForce, ForceMode.Force);
+        
     }
 
     public void EventStartWind()

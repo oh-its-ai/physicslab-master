@@ -14,6 +14,10 @@ namespace Lab
 
         public override void StateUpdate()
         {
+            // apply wind resistance to the cubes
+            WindController.Instance.ApplyWindresistance(Sim.cube1.GetRidgidBody());
+            WindController.Instance.ApplyWindresistance(Sim.cube2.GetRidgidBody());
+            
             // todo
             // teil 3 für ims LAB
         }

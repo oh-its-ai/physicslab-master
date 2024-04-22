@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
+using System.IO;
 
 public class SpringController : MonoBehaviour
 {
@@ -27,6 +25,12 @@ public class SpringController : MonoBehaviour
     private float _lastForce;
     private Vector3 _newSpringMiddle;
     private Vector3 _initMiddle;
+    
+    
+    
+    private List<List<float>> _timeSeries = new List<List<float>>();
+    private float _springCompression;
+
 
     private void Start()
     {
@@ -46,8 +50,29 @@ public class SpringController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        _timeSeries.Add(new List<float>() {SimulationController.Instance.GetSimTimeInSeconds(), GetSpringForce()});
         UpdateSpringMiddle();
         UpdateSpringVisuals();
+        
+    }
+    private void WriteTimeSeriesToCSV() {
+        using (var streamWriter = new StreamWriter(name + "_time_series.csv")) {
+            streamWriter.WriteLine("t,F_spring");
+            foreach (List<float> timeStep in _timeSeries) {
+                streamWriter.WriteLine(string.Join(",", timeStep));
+                streamWriter.Flush();
+            }
+        }
+    }
+    
+    void OnApplicationQuit() {
+        WriteTimeSeriesToCSV();
+    }
+    
+    public float GetSpringForce()
+    {
+        Debug.Log("Spring force: " + springConstant * _springCompression);
+        return springConstant * _springCompression;
     }
 
     private void UpdateSpringMiddle()
@@ -136,5 +161,15 @@ public class SpringController : MonoBehaviour
     private float GetDistanceToCubeRightWithNegatives()
     {
         return IsCubeRightToTheRight() ? GetDistanceToCubeRight() : -GetDistanceToCubeRight();
+    }
+
+    public void SetSpringCompression(float springCompression)
+    {
+        _springCompression = springCompression;
+    }
+
+    public void SetSpringConstant(float f)
+    {
+        springConstant = f;
     }
 }

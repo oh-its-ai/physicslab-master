@@ -17,24 +17,26 @@ namespace Lab
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName+ " has Started");
-            //springLength = Sim.GetActiveLabConfig().springLength;
-            //springConstant = Sim.GetActiveLabConfig().springConstant;
+            Sim.spring1.SetSpringLength(SpringLength);
+            Sim.spring1.SetSpringConstant(SpringConstant);
         }
 
         public override void StateUpdate()
         {
+            // apply wind resistance to the cubes
+            WindController.Instance.ApplyWindresistance(Sim.cube1.GetRidgidBody());
+            WindController.Instance.ApplyWindresistance(Sim.cube2.GetRidgidBody());
+            
             if (Sim.GetCubesDistance() <= (SpringLength))
             {
-                // todo add de "Normal Kraft"
-                // todo fix impulse calculation
                 Sim.spring1.SetSpringLength(Sim.GetCubesDistance());
             
                 _springCompression = SpringLength - Sim.GetCubesDistance();
+                Sim.spring1.SetSpringCompression(_springCompression);
+                
                 float force = SpringConstant * _springCompression;
-                float forceCube1 = force/Sim.cube1.GetMass(); // * (100f/ Sim.cube1.GetMass());
-                float forceCube2 = force/Sim.cube2.GetMass(); //* (100f/ Sim.cube2.GetMass());
-                //Sim.cube1.AddForce(-forceCube1);
-                //Sim.cube2.AddForce(forceCube2);
+                float forceCube1 = force/Sim.cube1.GetMass();
+                float forceCube2 = force/Sim.cube2.GetMass();
                 Sim.cube1.GetRidgidBody().AddForce(new Vector3(-forceCube1,0,0), ForceMode.Acceleration);
                 Sim.cube2.GetRidgidBody().AddForce(new Vector3(forceCube2,0,0), ForceMode.Acceleration);
             }
