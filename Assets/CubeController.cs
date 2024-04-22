@@ -143,7 +143,7 @@ public class CubeController : MonoBehaviour
 
     private float GetWindResistanceForce()
     {
-        return WindController.Instance.GetWindResistanceForce(this, 0).x;
+        return WindController.Instance.GetWindResistanceForce(this).x;
     }
 
     private void WriteTimeSeriesToCSV() {

@@ -19,7 +19,7 @@ namespace ScriptableObjects
         public Medium medium = Medium.Air;
         public ObjectType objektForm = ObjectType.Cube;
         public float MediumDensity => GetMediumDensity();
-        public Vector3 Widerstandsbeiwert => GetWidersandsbeiwert();
+        public float Widerstandsbeiwert => GetWidersandsbeiwert();
 
         
         
@@ -75,18 +75,18 @@ namespace ScriptableObjects
             }
         }
         
-        private Vector3 GetWidersandsbeiwert()
+        private float GetWidersandsbeiwert()
         {
             switch (objektForm)
             {
                 case ObjectType.Cube:
-                    return new Vector3(1, 0, 0);
+                    return 1.2f;
                 case ObjectType.Sphere:
-                    return new Vector3(0.47f, 0, 0);
+                    return 0.47f;
                 case ObjectType.Cylinder:
-                    return new Vector3(0.82f, 0, 0);
+                    return 0.82f;
                 default:
-                    return new Vector3(1, 0, 0);
+                    return 1.2f;
             }
         }
         

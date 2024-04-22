@@ -54,8 +54,8 @@ public class SpringController : MonoBehaviour
         _timeSeries.Add(new List<float>() {SimulationController.Instance.GetSimTimeInSeconds(), GetSpringForce()});
         UpdateSpringMiddle();
         UpdateSpringVisuals();
-        
     }
+    
     private void WriteTimeSeriesToCSV() {
         using (var streamWriter = new StreamWriter(name + "_time_series.csv")) {
             streamWriter.WriteLine("t,F_spring");
@@ -72,7 +72,7 @@ public class SpringController : MonoBehaviour
     
     public float GetSpringForce()
     {
-        return springConstant * _springCompression;
+        return -0.5f * springConstant * Mathf.Pow(_springCompression, 2f);
     }
 
     private void UpdateSpringMiddle()

@@ -16,12 +16,12 @@ namespace Lab
         {
             // apply wind resistance to the cubes
             Vector3 cube1FWind = Vector3.zero;
-            Vector3 cube1FWindResistance = Wind.GetWindResistanceForce(Sim.cube1, 0);
+            Vector3 cube1FWindResistance = Wind.GetWindResistanceForce(Sim.cube1);
             Vector3 cube1Gravity = Sim.cube1.GetMass() * Physics.gravity;
             Vector3 cube1Normal = Sim.cube1.GetNormalForceVector3(0f);
             
             Vector3 cube2FWind = Vector3.zero;
-            Vector3 cube2FWindResistance = Wind.GetWindResistanceForce(Sim.cube2,0);
+            Vector3 cube2FWindResistance = Wind.GetWindResistanceForce(Sim.cube2);
             Vector3 cube2Gravity = Sim.cube2.GetMass() * Physics.gravity;
             Vector3 cube2Normal = Sim.cube2.GetNormalForceVector3(0f);
             

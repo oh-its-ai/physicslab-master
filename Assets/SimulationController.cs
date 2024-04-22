@@ -256,4 +256,21 @@ public class SimulationController : MonoBehaviour
         Debug.Log("Cube1: " + cube1FWind + " " + cube1FWindResistance + " " + cube1Gravity + " " + cube1Normal + " " + cube1FTotal);
         Debug.Log("Cube2: " + cube2FWind + " " + cube2FWindResistance + " " + cube2Gravity + " " + cube2Normal + " " + cube2FTotal);
     }
+    
+    public void ReloadScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+    
+    public void TogglePausePlay()
+    {
+        if (Time.timeScale == 0)
+        {
+            Time.timeScale = 1;
+        }
+        else
+        {
+            Time.timeScale = 0;
+        }
+    }
 }

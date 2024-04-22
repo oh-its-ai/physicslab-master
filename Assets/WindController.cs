@@ -22,7 +22,7 @@ public class WindController : MonoBehaviour
     
     // Config
     private float AirDensity => SimulationController.Instance.GetActiveLabConfig().MediumDensity; // kg/m^3
-    private Vector3 DragCoefficient => SimulationController.Instance.GetActiveLabConfig().Widerstandsbeiwert; // for e box
+    private float DragCoefficient => SimulationController.Instance.GetActiveLabConfig().Widerstandsbeiwert; // for e box
     private float _dragCoefficient = 1.2f; // for e box
     private float _area = 1 * 1; // Assuming a cube, i know, i know, i could leave it out but i dont want to
     
@@ -46,7 +46,6 @@ public class WindController : MonoBehaviour
 
     }
     
-
     #endregion
 
     #region Updates
@@ -63,36 +62,10 @@ public class WindController : MonoBehaviour
     #endregion
     
     
-    public Vector3 GetWindForce()
+    public Vector3 GetWindResistanceForce(CubeController cube)
     {
-        return _windForce;
-    }
-    
-    public Vector3 GetWindResistanceForce(CubeController cube, float windSpeed)
-    {
-        return DragCoefficient * (0.5f * AirDensity * cube.GetArea() * MathF.Pow(cube.GetRidgidBody().velocity.magnitude, 2f));
-    }
-    
-    
-    
-    public void ApplyWindresistance(Rigidbody body)
-    {
-        // Implement drag
-        var dragCoefficient = _dragCoefficient; // for e box
-        var airDensity = AirDensity;
-        var area = _area; // Assuming a cube, i know, i know, i could leave it out but i dont want to
-
-        // Calculate drag force like in the BUUKS
-        // Fd = 1/2 * Cd * rho * A * v^2 * (de vel inverted and normalized "direction")
-        Vector3 dragForce = 0.5f * dragCoefficient * airDensity * area 
-                            * MathF.Pow(_windForce.x,2f) 
-                            * -_windForce.normalized;
-        // print to console: dragCoefficient, airDensity, area, _windForce.magnitude, _windForce.normalized
-        Debug.Log("Wind Force: " + _windForce + " - Drag" + dragForce+ " = " + (_windForce - dragForce));
-        Debug.Log(body.gameObject.name+ ": "+dragCoefficient + " - " + airDensity + " - " + area + " - " + body.velocity.x + " -> " + dragForce);
-        
-        body.AddForce(dragForce, ForceMode.Force);
-        
+        float drag = DragCoefficient * (0.5f * AirDensity * cube.GetArea() * MathF.Pow(cube.GetRidgidBody().velocity.magnitude, 2f));
+        return cube.GetRidgidBody().velocity.normalized * drag;
     }
 
     public void EventStartWind()
@@ -120,5 +93,12 @@ public class WindController : MonoBehaviour
     {
         _windForce = windDirection.normalized * windSpeed;
     }
-    
+
+    public Vector3 GetWindForce(CubeController cube, Vector3 windDirection, float windSpeed)
+    {
+        Vector3 relativeVelocity = (windDirection*windSpeed) - cube.GetRidgidBody().velocity;
+        float speed = relativeVelocity.magnitude;
+        Vector3 dragForce = 0.5f * DragCoefficient * AirDensity * cube.GetArea() * MathF.Pow(speed,2) * relativeVelocity.normalized;
+        return dragForce;
+    }
 }

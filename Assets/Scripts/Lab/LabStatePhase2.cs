@@ -24,12 +24,12 @@ namespace Lab
         public override void StateUpdate()
         {
             Vector3 cube1FWind = Vector3.zero;
-            Vector3 cube1FWindResistance = Wind.GetWindResistanceForce(Sim.cube1, 0);
+            Vector3 cube1FWindResistance = Wind.GetWindResistanceForce(Sim.cube1);
             Vector3 cube1Gravity = Sim.cube1.GetMass() * Physics.gravity;
             Vector3 cube1Normal = Sim.cube1.GetNormalForceVector3(0f);
             
             Vector3 cube2FWind = Vector3.zero;
-            Vector3 cube2FWindResistance = Wind.GetWindResistanceForce(Sim.cube2,0);
+            Vector3 cube2FWindResistance = Wind.GetWindResistanceForce(Sim.cube2);
             Vector3 cube2Gravity = Sim.cube2.GetMass() * Physics.gravity;
             Vector3 cube2Normal = Sim.cube2.GetNormalForceVector3(0f);
             
@@ -41,16 +41,15 @@ namespace Lab
             
             if (Sim.GetCubesDistance() <= (SpringLength))
             {
-                Sim.spring1.SetSpringLength(Sim.GetCubesDistance());
-            
                 _springCompression = SpringLength - Sim.GetCubesDistance();
-                Sim.spring1.SetSpringCompression(_springCompression);
-                
                 float force = SpringConstant * _springCompression;
                 float forceCube1 = force/Sim.cube1.GetMass();
                 float forceCube2 = force/Sim.cube2.GetMass();
                 Sim.cube1.GetRidgidBody().AddForce(new Vector3(-forceCube1,0,0), ForceMode.Acceleration);
                 Sim.cube2.GetRidgidBody().AddForce(new Vector3(forceCube2,0,0), ForceMode.Acceleration);
+                
+                Sim.spring1.SetSpringLength(Sim.GetCubesDistance());
+                Sim.spring1.SetSpringCompression(_springCompression);
             }
             // registers if cube1 and the spring1 have parted their ways
             if (Sim.GetCubesDistance() > SpringLength)

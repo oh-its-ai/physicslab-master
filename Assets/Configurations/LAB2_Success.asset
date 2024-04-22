@@ -15,8 +15,9 @@ MonoBehaviour:
   labName: LAB2 V1
   startingState: {fileID: 11400000, guid: f23212353162545358aaa0480caa1e12, type: 2}
   windDirection: {x: -1, y: 0, z: 0}
-  windSpeed: 0.5
+  windSpeed: 0.3
   medium: 0
+  objektForm: 0
   springStartLength: 1.9
   springStartConstant: 40
   springLength: 3
