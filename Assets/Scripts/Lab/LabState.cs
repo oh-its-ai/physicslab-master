@@ -23,6 +23,7 @@ namespace Lab
         public LabState nextState;
 
         protected SimulationController Sim => SimulationController.Instance;
+        protected WindController Wind => WindController.Instance;
         public abstract void OnStateEnter();
         public abstract void StateUpdate();
         public abstract void OnStateExit();

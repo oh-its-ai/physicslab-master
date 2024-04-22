@@ -5,7 +5,10 @@ using UnityEngine;
 using Lab;
 using ScriptableObjects;
 using TMPro;
-
+using System;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 /*
     Controls the simulation, including the cubes, springs, and camera.
     Author: cavegde1
@@ -55,6 +58,7 @@ public class SimulationController : MonoBehaviour
     private bool _updateGraphs = true;
     
     private Camera _mainCamera;
+    private List<List<float>> _timeSeries = new List<List<float>>();
 
     private void Awake() 
     { 
@@ -123,7 +127,7 @@ public class SimulationController : MonoBehaviour
     }
 
     void OnApplicationQuit() {
-        
+        WriteTimeSeriesToCSV();
     }
 
     #region Camera
@@ -137,9 +141,9 @@ public class SimulationController : MonoBehaviour
     private void UpdateCameraTransform()
     {
         // lerp camera to target
-
-        
         if (!_mainCamera) return;
+        if (!_mainCamera.transform) return;
+        if(!_targetCameraTransform) return;
         _mainCamera.transform.position = Vector3.Lerp(_mainCamera.transform.position,
                 _targetCameraTransform.position, Time.deltaTime);
         _mainCamera.transform.rotation = Quaternion.Lerp(_mainCamera.transform.rotation,
@@ -159,6 +163,24 @@ public class SimulationController : MonoBehaviour
     #endregion
     
 
+    public void LogData()
+    {
+
+    }
+    
+    public void WriteTimeSeriesToCSV()
+    {
+        using (var streamWriter = new StreamWriter("sim_time_series.csv"))
+        {
+            streamWriter.WriteLine("t,v1,p1,E1,v2,p2,E2,Espring");
+            foreach (List<float> timeStep in _timeSeries)
+            {
+                streamWriter.WriteLine(string.Join(",", timeStep));
+                streamWriter.Flush();
+            }
+        }
+    }
+    
     public void EventRegisterImpact(CubeController cube, Collision other)
     {
         if(_currentState) _currentState.RegisterEvent(cube, other.gameObject);
@@ -228,5 +250,10 @@ public class SimulationController : MonoBehaviour
     }
 
     #endregion
-    
+
+    public void LogForces(Vector3 cube1FWind, Vector3 cube1FWindResistance, Vector3 cube1Gravity, Vector3 cube1Normal, Vector3 cube1FTotal, Vector3 cube2FWind, Vector3 cube2FWindResistance, Vector3 cube2Gravity, Vector3 cube2Normal, Vector3 cube2FTotal)
+    {
+        Debug.Log("Cube1: " + cube1FWind + " " + cube1FWindResistance + " " + cube1Gravity + " " + cube1Normal + " " + cube1FTotal);
+        Debug.Log("Cube2: " + cube2FWind + " " + cube2FWindResistance + " " + cube2Gravity + " " + cube2Normal + " " + cube2FTotal);
+    }
 }

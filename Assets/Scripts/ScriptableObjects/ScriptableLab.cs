@@ -17,7 +17,9 @@ namespace ScriptableObjects
         public float windSpeed = 20; // m/s
         [Tooltip("Medium density in kg/m^3 (Air: 1.225, Water: 1000, Oil: 900, Honey: 1400)")]
         public Medium medium = Medium.Air;
+        public ObjectType objektForm = ObjectType.Cube;
         public float MediumDensity => GetMediumDensity();
+        public Vector3 Widerstandsbeiwert => GetWidersandsbeiwert();
 
         
         
@@ -49,6 +51,13 @@ namespace ScriptableObjects
             Honey
         }
         
+        public enum ObjectType
+        {
+            Cube,
+            Sphere,
+            Cylinder
+        }
+        
         private float GetMediumDensity()
         {
             switch (medium)
@@ -63,6 +72,21 @@ namespace ScriptableObjects
                     return 1400f;
                 default:
                     return 1.225f;
+            }
+        }
+        
+        private Vector3 GetWidersandsbeiwert()
+        {
+            switch (objektForm)
+            {
+                case ObjectType.Cube:
+                    return new Vector3(1, 0, 0);
+                case ObjectType.Sphere:
+                    return new Vector3(0.47f, 0, 0);
+                case ObjectType.Cylinder:
+                    return new Vector3(0.82f, 0, 0);
+                default:
+                    return new Vector3(1, 0, 0);
             }
         }
         

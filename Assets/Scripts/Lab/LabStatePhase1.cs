@@ -16,6 +16,7 @@ namespace Lab
     {
         public Vector3 windDirection = new Vector3(1, 0, 0);
         public float windSpeed = 1f;
+        
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName+ " has Started");
@@ -25,9 +26,28 @@ namespace Lab
 
         public override void StateUpdate()
         {
+            Vector3 cube1FWind = windDirection * windSpeed;
+            Vector3 cube1FWindResistance = Wind.GetWindResistanceForce(Sim.cube1, windSpeed);
+            Vector3 cube1Gravity = Sim.cube1.GetMass() * Physics.gravity;
+            Vector3 cube1Normal = Sim.cube1.GetNormalForceVector3(0f);
+            
+            Vector3 cube2FWind = Vector3.zero;
+            Vector3 cube2FWindResistance = Wind.GetWindResistanceForce(Sim.cube2,0);
+            Vector3 cube2Gravity = Sim.cube2.GetMass() * Physics.gravity;
+            Vector3 cube2Normal = Sim.cube2.GetNormalForceVector3(0f);
+            
+            Vector3 cube1FTotal = (cube1FWind - cube1FWindResistance) + (cube1Gravity - cube1Normal);
+            Vector3 cube2FTotal = (cube2FWind - cube2FWindResistance) + (cube2Gravity - cube2Normal);
+            
+            Sim.LogForces(cube1FWind, cube1FWindResistance, cube1Gravity, cube1Normal, cube1FTotal
+                , cube2FWind, cube2FWindResistance, cube2Gravity, cube2Normal, cube2FTotal);
+            
+            Sim.cube1.GetRidgidBody().AddForce(cube1FTotal);
+            Sim.cube2.GetRidgidBody().AddForce(cube2FTotal);
+            
             // apply wind resistance to the cubes
-            WindController.Instance.ApplyWindresistance(Sim.cube1.GetRidgidBody());
-            WindController.Instance.ApplyWindresistance(Sim.cube2.GetRidgidBody());
+            //WindController.Instance.ApplyWindresistance(Sim.cube1.GetRidgidBody());
+            //WindController.Instance.ApplyWindresistance(Sim.cube2.GetRidgidBody());
             
             // registers if cube1 and the spring1 have collided
             if (Sim.GetCubesDistance() <= Sim.GetActiveLabConfig().springLength)

@@ -43,7 +43,8 @@ public class SpringController : MonoBehaviour
                 springMiddle = cubeLeft.transform.position + new Vector3(length/2, 0, 0);
             }
             middle.transform.position = springMiddle;
-            _initMiddle = springMiddle;
+            _initMiddle = springMiddle - new Vector3(.5f, 0, 0);
+            
         }
     }
 

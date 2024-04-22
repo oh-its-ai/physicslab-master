@@ -66,7 +66,8 @@ public class CubeController : MonoBehaviour
         infoText.text = name + "\n"+ 
                         "Speed(m/s)(v): " + $"{GetSpeed():0.00}\n" +
                         "E_kin(N): "+  $"{GetKineticEnergy():0.00}\n"+
-                        "Impuls(p): "+  $"{GetImpuls():0.00}\n";
+                        "Impuls(p): "+  $"{GetImpuls():0.00}\n" + 
+                        "F_WindRes(N)=" + $"{GetWindResistanceForce():0.00}|";;
     }
 
     #region Get Attributes
@@ -122,9 +123,9 @@ public class CubeController : MonoBehaviour
         return GetMass() * normal;
     }
     
-    public Vector3 GetNormalForceVector3(Vector3 normal)
+    public Vector3 GetNormalForceVector3(float winklePlane)
     {
-        return GetMass() * normal;
+        return GetMass() * Physics.gravity * Mathf.Cos(winklePlane);
     }
     
     #endregion
@@ -136,8 +137,15 @@ public class CubeController : MonoBehaviour
         return name + ": p=" + $"{GetImpuls():0.00} kg/s |" 
                + " v=" + $"{GetSpeed():0.00} m/S |" 
                + " s=" + $"{GetDistanceTravelled():0.00} m |"
-               + " E_kin=" + $"{GetKineticEnergy():0.00} N |";
+               + " E_kin=" + $"{GetKineticEnergy():0.00} N |"
+               + " F_Luft=" + $"{GetWindResistanceForce():0.00} N |";
     }
+
+    private float GetWindResistanceForce()
+    {
+        return WindController.Instance.GetWindResistanceForce(this, 0).x;
+    }
+
     private void WriteTimeSeriesToCSV() {
         using (var streamWriter = new StreamWriter(name + "time_series.csv")) {
             streamWriter.WriteLine("t,x(t),v(t),F(t),p(added)");
@@ -188,5 +196,10 @@ public class CubeController : MonoBehaviour
     public Rigidbody GetRidgidBody()
     {
         return _rigidBody;
+    }
+
+    public float GetArea()
+    {
+        return 1 * 1; // Assuming a cube, i know, i know, i could leave it out but i dont want to
     }
 }
