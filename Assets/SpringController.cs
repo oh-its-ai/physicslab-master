@@ -71,7 +71,6 @@ public class SpringController : MonoBehaviour
     
     public float GetSpringForce()
     {
-        Debug.Log("Spring force: " + springConstant * _springCompression);
         return springConstant * _springCompression;
     }
 

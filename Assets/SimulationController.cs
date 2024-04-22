@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
-
-using System.IO;
 using Lab;
 using ScriptableObjects;
 using TMPro;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
 
 /*
     Controls the simulation, including the cubes, springs, and camera.
@@ -47,9 +42,9 @@ public class SimulationController : MonoBehaviour
     public List<Camera> cameras;
     
     // Data
-    private int _lastLoggedSecond = 0;
-    private float _msSinceStart = 0f;
-    private float _secondsSinceStart = 0;
+    private int _lastLoggedSecond;
+    private float _msSinceStart;
+    private float _secondsSinceStart;
     public List<int> valueListCube1Vel = new List<int>() {};
     public List<int> valueListCube2Vel = new List<int>() {};
 
@@ -58,6 +53,8 @@ public class SimulationController : MonoBehaviour
     private Transform _targetCameraTransform;
     private int _currentCameraIndex;
     private bool _updateGraphs = true;
+    
+    private Camera _mainCamera;
 
     private void Awake() 
     { 
@@ -75,7 +72,7 @@ public class SimulationController : MonoBehaviour
     private void Start()
     {
         //protocolText.text = "Start: " + 0;
-
+        _mainCamera = Camera.main;
         spring1.SetSpringLength(GetActiveLabConfig().springLength);
         
         StartState(GetActiveLabConfig().startingState);
@@ -98,6 +95,11 @@ public class SimulationController : MonoBehaviour
         }
         
         if(_currentState) _currentState.StateUpdate();
+        
+    }
+
+    private void Update()
+    {
         UpdateCameraTransform();
     }
 
@@ -135,8 +137,14 @@ public class SimulationController : MonoBehaviour
     private void UpdateCameraTransform()
     {
         // lerp camera to target
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, _targetCameraTransform.position, Time.deltaTime);
-        Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, _targetCameraTransform.rotation, Time.deltaTime);
+
+        
+        if (!_mainCamera) return;
+        _mainCamera.transform.position = Vector3.Lerp(_mainCamera.transform.position,
+                _targetCameraTransform.position, Time.deltaTime);
+        _mainCamera.transform.rotation = Quaternion.Lerp(_mainCamera.transform.rotation,
+                _targetCameraTransform.rotation, Time.deltaTime);
+        
     }
     
     public void SetUpdateGraphs(bool update)
