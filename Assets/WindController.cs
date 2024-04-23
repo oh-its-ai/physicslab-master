@@ -61,7 +61,6 @@ public class WindController : MonoBehaviour
 
     #endregion
     
-    
     public Vector3 GetWindResistanceForce(CubeController cube)
     {
         float drag = DragCoefficient * (0.5f * AirDensity * cube.GetArea() * MathF.Pow(cube.GetRidgidBody().velocity.magnitude, 2f));
@@ -100,5 +99,14 @@ public class WindController : MonoBehaviour
         float speed = relativeVelocity.magnitude;
         Vector3 dragForce = 0.5f * DragCoefficient * AirDensity * cube.GetArea() * MathF.Pow(speed,2) * relativeVelocity.normalized;
         return dragForce;
+    }
+
+    public void SetWindForce(Vector3 windForce)
+    {
+        _windForce = windForce;
+    }
+    public Vector3 GetGeneralWindForce()
+    {
+        return _windForce;
     }
 }

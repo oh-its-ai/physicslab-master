@@ -22,6 +22,7 @@ namespace Lab
             Sim.WriteProtocol(stateName+ " has Started");
             WindController.Instance.SetWind(windDirection, windSpeed);
             WindController.Instance.EventStartWind();
+            WindController.Instance.SetWindForce(windDirection * windSpeed);
         }
 
         public override void StateUpdate()
@@ -54,6 +55,8 @@ namespace Lab
             if (Sim.GetCubesDistance() <= Sim.GetActiveLabConfig().springLength)
             {
                 WindController.Instance.EventStopWind();
+                WindController.Instance.SetWindForce(0f * windDirection);
+
                 Sim.WriteProtocol("Impuls on impact: " + Sim.cube1.GetMass() * Sim.cube1.GetSpeed());
                 Sim.ChangeState();
             }
