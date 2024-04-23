@@ -24,21 +24,25 @@ namespace Lab
 
         public override void StateUpdate()
         {
-            Vector3 cube1FWind = Vector3.zero;
-            Vector3 cube1FWindResistance = Wind.GetWindResistanceForce(Sim.cube1);
-            Vector3 cube1Gravity = Sim.cube1.GetMass() * Physics.gravity;
-            Vector3 cube1Normal = Sim.cube1.GetNormalForceVector3(0f);
+            // Calc Cube1 Forces
+            Vector3 cube1FWind = Wind.GetWindForce(Cube1, Vector3.zero, 0f);
+            Vector3 cube1Gravity = Cube1.GetMass() * Physics.gravity;
+            Vector3 cube1Normal = Cube1.GetNormalForceVector3(0f);
+            Vector3 cube1FFriction = Vector3.zero; //Sim.cube1.GetFriction(); not required
+
+            // Calc Cube2 Forces
+            Vector3 cube2FWind = Wind.GetWindForce(Cube2, Vector3.zero, 0f);
+            Vector3 cube2Gravity = Cube2.GetMass() * Physics.gravity;
+            Vector3 cube2Normal = Cube2.GetNormalForceVector3(0f);
+            Vector3 cube2FFriction = Vector3.zero; //Sim.cube2.GetFriction(); not required
             
-            Vector3 cube2FWind = Vector3.zero;
-            Vector3 cube2FWindResistance = Wind.GetWindResistanceForce(Sim.cube2);
-            Vector3 cube2Gravity = Sim.cube2.GetMass() * Physics.gravity;
-            Vector3 cube2Normal = Sim.cube2.GetNormalForceVector3(0f);
+            // Calc Total Forces
+            Vector3 cube1FTotal = (cube1FWind - cube1FFriction) + (cube1Gravity - cube1Normal);
+            Vector3 cube2FTotal = (cube2FWind - cube2FFriction) + (cube2Gravity - cube2Normal);
             
-            Vector3 cube1FTotal = (cube1FWind - cube1FWindResistance) + (cube1Gravity - cube1Normal);
-            Vector3 cube2FTotal = (cube2FWind - cube2FWindResistance) + (cube2Gravity - cube2Normal);
-            
-            Sim.cube1.GetRidgidBody().AddForce(cube1FTotal);
-            Sim.cube2.GetRidgidBody().AddForce(cube2FTotal);
+            // Apply Forces
+            Cube1.GetRidgidBody().AddForce(cube1FTotal);
+            Cube2.GetRidgidBody().AddForce(cube2FTotal);
             
             if(!SpringStart.cubeRight) return;
             if(SpringStart.cubeLeft) return;

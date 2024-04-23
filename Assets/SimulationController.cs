@@ -59,6 +59,8 @@ public class SimulationController : MonoBehaviour
     
     private Camera _mainCamera;
     private List<List<float>> _timeSeries = new List<List<float>>();
+    private ScriptableLab.Medium _medium;
+    private float _mediumDensity;
 
     private void Awake() 
     { 
@@ -75,6 +77,9 @@ public class SimulationController : MonoBehaviour
 
     private void Start()
     {
+        // load Variables from ScriptableLab
+        _medium = labConfig.medium;
+        _mediumDensity = labConfig.MediumDensity;
         //protocolText.text = "Start: " + 0;
         _mainCamera = Camera.main;
         spring1.SetSpringLength(GetActiveLabConfig().springLength);
@@ -97,6 +102,8 @@ public class SimulationController : MonoBehaviour
             
             UpdateGraphs();
         }
+
+        LogData();
         
         if(_currentState) _currentState.StateUpdate();
         
@@ -128,6 +135,8 @@ public class SimulationController : MonoBehaviour
 
     void OnApplicationQuit() {
         WriteTimeSeriesToCSV();
+        
+
     }
 
     #region Camera
@@ -165,14 +174,26 @@ public class SimulationController : MonoBehaviour
 
     public void LogData()
     {
-
+        _timeSeries.Add(new List<float>()
+        {
+            GetSimTimeInSeconds(),
+            cube1.GetSpeed(),
+            cube1.GetImpuls(),
+            cube1.GetKineticEnergy(),
+            cube2.GetSpeed(),
+            cube2.GetImpuls(),
+            cube2.GetKineticEnergy(),
+            spring1.GetSpringForce(),
+            cube1.GetKineticEnergy() + cube2.GetKineticEnergy() + spring1.GetSpringForce(),
+            cube1.GetImpuls() + cube2.GetImpuls()
+        });
     }
     
     public void WriteTimeSeriesToCSV()
     {
         using (var streamWriter = new StreamWriter("sim_time_series.csv"))
         {
-            streamWriter.WriteLine("t,v1,p1,E1,v2,p2,E2,Espring");
+            streamWriter.WriteLine("t,v1,p1,F_1,v2,p2,F_2,F_spring,F_total,pTotal");
             foreach (List<float> timeStep in _timeSeries)
             {
                 streamWriter.WriteLine(string.Join(",", timeStep));
@@ -272,5 +293,36 @@ public class SimulationController : MonoBehaviour
         {
             Time.timeScale = 0;
         }
+    }
+
+    public ScriptableLab.Medium GetDataMedium()
+    {
+        return _medium;
+    }
+    
+    public float GetDataMediumDensity()
+    {
+        return _mediumDensity;
+    }
+    
+    public void SwitchMedium(ScriptableLab.Medium newMedium)
+    {
+        _medium = newMedium;
+        _mediumDensity = labConfig.GetMediumDensity(_medium);
+    }
+    
+    public void SwitchMediumWater()
+    {
+        SwitchMedium(ScriptableLab.Medium.Water);
+    }
+    
+    public void SwitchMediumAir()
+    {
+        SwitchMedium(ScriptableLab.Medium.Air);
+    }
+    
+    public void SwitchMediumHoney()
+    {
+        SwitchMedium(ScriptableLab.Medium.Honey);
     }
 }

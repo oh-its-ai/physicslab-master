@@ -21,10 +21,8 @@ public class WindController : MonoBehaviour
     public List<Rigidbody> affectedBodies;
     
     // Config
-    private float AirDensity => SimulationController.Instance.GetActiveLabConfig().MediumDensity; // kg/m^3
+    private float MediumDensity => SimulationController.Instance.GetDataMediumDensity(); // kg/m^3
     private float DragCoefficient => SimulationController.Instance.GetActiveLabConfig().Widerstandsbeiwert; // for e box
-    private float _dragCoefficient = 1.2f; // for e box
-    private float _area = 1 * 1; // Assuming a cube, i know, i know, i could leave it out but i dont want to
     
     #region Awake, Start
     private void Awake() 
@@ -63,7 +61,7 @@ public class WindController : MonoBehaviour
     
     public Vector3 GetWindResistanceForce(CubeController cube)
     {
-        float drag = DragCoefficient * (0.5f * AirDensity * cube.GetArea() * MathF.Pow(cube.GetRidgidBody().velocity.magnitude, 2f));
+        float drag = DragCoefficient * (0.5f * MediumDensity * cube.GetArea() * MathF.Pow(cube.GetRidgidBody().velocity.magnitude, 2f));
         return cube.GetRidgidBody().velocity.normalized * drag;
     }
 
@@ -95,9 +93,9 @@ public class WindController : MonoBehaviour
 
     public Vector3 GetWindForce(CubeController cube, Vector3 windDirection, float windSpeed)
     {
-        Vector3 relativeVelocity = (windDirection*windSpeed) - cube.GetRidgidBody().velocity;
-        float speed = relativeVelocity.magnitude;
-        Vector3 dragForce = 0.5f * DragCoefficient * AirDensity * cube.GetArea() * MathF.Pow(speed,2) * relativeVelocity.normalized;
+        var relativeVelocity = (windDirection*windSpeed) - cube.GetRidgidBody().velocity;
+        var speed = relativeVelocity.magnitude;
+        var dragForce = 0.5f * DragCoefficient * MediumDensity * cube.GetArea() * MathF.Pow(speed,2) * relativeVelocity.normalized;
         return dragForce;
     }
 

@@ -1,3 +1,4 @@
+using System;
 using Lab;
 using UnityEngine;
 
@@ -43,6 +44,7 @@ namespace ScriptableObjects
         [Tooltip("Cube 2 mass in kg.")]
         public float cube2Mass = 200; // kg
 
+        [Serializable]
         public enum Medium
         {
             Air,
@@ -75,6 +77,23 @@ namespace ScriptableObjects
             }
         }
         
+        public float GetMediumDensity(Medium newMedium)
+        {
+            switch (newMedium)
+            {
+                case Medium.Air:
+                    return 1.225f;
+                case Medium.Water:
+                    return 1000f;
+                case Medium.Oil:
+                    return 900f;
+                case Medium.Honey:
+                    return 1400f;
+                default:
+                    return 1.225f;
+            }
+        }
+        
         private float GetWidersandsbeiwert()
         {
             switch (objektForm)
@@ -89,6 +108,7 @@ namespace ScriptableObjects
                     return 1.2f;
             }
         }
+        
         
         public Vector3 GetWindForce()
         {
