@@ -59,10 +59,20 @@ public class WindController : MonoBehaviour
 
     #endregion
     
-    public Vector3 GetWindResistanceForce(CubeController cube)
+    public Vector3 GetWindResistanceForce(CubeController cube,Vector3 windDirection, float windSpeed)
     {
-        float drag = DragCoefficient * (0.5f * MediumDensity * cube.GetArea() * MathF.Pow(cube.GetRidgidBody().velocity.magnitude, 2f));
+        var relativeVelocity = (windDirection*windSpeed) - cube.GetRidgidBody().velocity;
+        var speed = relativeVelocity.magnitude;
+        float drag = DragCoefficient * (0.5f * MediumDensity * cube.GetArea() * MathF.Pow(speed, 2f));
         return cube.GetRidgidBody().velocity.normalized * drag;
+    }
+    
+    public Vector3 GetWindForce(CubeController cube, Vector3 windDirection, float windSpeed)
+    {
+        var relativeVelocity = (windDirection*windSpeed) - cube.GetRidgidBody().velocity;
+        var speed = relativeVelocity.magnitude;
+        var windForce = 0.5f * DragCoefficient * MediumDensity * cube.GetArea() * MathF.Pow(speed,2) * relativeVelocity.normalized;
+        return windForce;
     }
 
     public void EventStartWind()
@@ -91,13 +101,7 @@ public class WindController : MonoBehaviour
         _windForce = windDirection.normalized * windSpeed;
     }
 
-    public Vector3 GetWindForce(CubeController cube, Vector3 windDirection, float windSpeed)
-    {
-        var relativeVelocity = (windDirection*windSpeed) - cube.GetRidgidBody().velocity;
-        var speed = relativeVelocity.magnitude;
-        var dragForce = 0.5f * DragCoefficient * MediumDensity * cube.GetArea() * MathF.Pow(speed,2) * relativeVelocity.normalized;
-        return dragForce;
-    }
+    
 
     public void SetWindForce(Vector3 windForce)
     {
