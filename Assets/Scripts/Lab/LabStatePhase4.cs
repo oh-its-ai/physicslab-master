@@ -8,7 +8,7 @@ namespace Lab
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName + " has Started");
-            
+            Sim.SetWorldSpeed(stateWorldSpeed);
             Sim.SetActiveSpring(false);
         }
 

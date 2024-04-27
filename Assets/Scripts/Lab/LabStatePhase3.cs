@@ -7,6 +7,7 @@ namespace Lab
     {
         public override void OnStateEnter()
         {
+            Sim.SetWorldSpeed(stateWorldSpeed);
             Sim.WriteProtocol(stateName + " has Started");
         }
 

@@ -16,6 +16,7 @@ namespace Lab
         private float _springCompression;
         public override void OnStateEnter()
         {
+            Sim.SetWorldSpeed(stateWorldSpeed);
             Sim.WriteProtocol(stateName+ " has Started");
             Sim.spring1.SetSpringLength(SpringLength);
             Sim.spring1.SetSpringConstant(SpringConstant);
@@ -25,7 +26,6 @@ namespace Lab
         {
             // Calc Cube1 Forces
             Vector3 cube1FWind = Wind.GetWindForce(Cube1, Vector3.zero, 0f);
-            Vector3 cube1MediumResistance = Wind.GetWindResistanceForce(Cube1, Vector3.zero, 0f);
             Vector3 cube1Gravity = Cube1.GetMass() * Physics.gravity;
             Vector3 cube1Normal = Cube1.GetNormalForceVector3(0f);
             Vector3 cube1FFriction = Vector3.zero; //Sim.cube1.GetFriction(); not required
@@ -37,7 +37,7 @@ namespace Lab
             Vector3 cube2FFriction = Vector3.zero; //Sim.cube2.GetFriction(); not required
             
             // Calc Total Forces
-            Vector3 cube1FTotal = (cube1FWind - cube1FFriction ) + (cube1Gravity - cube1Normal);
+            Vector3 cube1FTotal = (cube1FWind - cube1FFriction) + (cube1Gravity - cube1Normal);
             Vector3 cube2FTotal = (cube2FWind - cube2FFriction) + (cube2Gravity - cube2Normal);
             
             // Apply Forces

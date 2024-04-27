@@ -19,6 +19,7 @@ namespace Lab
         private SpringController SpringStart => Sim.springStart;
         public override void OnStateEnter()
         {
+            Sim.SetWorldSpeed(stateWorldSpeed);
             Sim.WriteProtocol(stateName+ " has Started");
         }
 

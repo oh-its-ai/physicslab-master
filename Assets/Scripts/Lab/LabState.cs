@@ -22,6 +22,7 @@ namespace Lab
         public String stateName;
         public LabState nextState;
 
+        public float stateWorldSpeed = 1f;
         protected SimulationController Sim => SimulationController.Instance;
         protected WindController Wind => WindController.Instance;
         

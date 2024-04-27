@@ -325,4 +325,9 @@ public class SimulationController : MonoBehaviour
     {
         SwitchMedium(ScriptableLab.Medium.Honey);
     }
+
+    public void SetWorldSpeed(float stateWorldSpeed)
+    {
+        Time.timeScale = stateWorldSpeed;
+    }
 }
