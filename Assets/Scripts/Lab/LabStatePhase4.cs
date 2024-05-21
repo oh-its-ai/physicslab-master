@@ -49,9 +49,12 @@ namespace Lab
             Debug.Log("Cube"+ cube.name + " attached to target"+ target.name);
             // attach cube to target
             CubeController cube2 = target.GetComponent<CubeController>();
-
-            cube2.AttachTo(cube.gameObject);
-            cube2.DisableRigidbody();
+            Sim.WriteProtocol("Energie: " + cube2.GetKineticEnergy());
+            //cube2.AttachTo(cube.gameObject);
+            cube2.AddToJoint(JointCubeL);
+            cube2.DisableCollider();
+            //cube2.DisableRigidbody();
+            //cube2.SetKinematic(true);
             Sim.ChangeState();
         }
     }

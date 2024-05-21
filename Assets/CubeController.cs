@@ -113,6 +113,12 @@ public class CubeController : MonoBehaviour
         return _lastSpeed;
     }
     
+    public void SetKinematic(bool value)
+    {
+        // set kinematic
+        GetRidgidBody().isKinematic = value;
+    }
+    
     public float GetWeight()
     {
         return GetMass() * Physics.gravity.y;
@@ -201,5 +207,17 @@ public class CubeController : MonoBehaviour
     public float GetArea()
     {
         return 1 * 1; // Assuming a cube, i know, i know, i could leave it out but i dont want to
+    }
+
+    public void AddToJoint(Rigidbody jointCubeL)
+    {
+        var joint = gameObject.AddComponent<FixedJoint>();
+        joint.massScale = 999;
+        joint.connectedBody = jointCubeL;
+    }
+
+    public void DisableCollider()
+    {
+        GetComponent<Collider>().enabled = false;
     }
 }

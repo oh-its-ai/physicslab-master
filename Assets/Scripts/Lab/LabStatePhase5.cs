@@ -19,10 +19,13 @@ namespace Lab
         private float _angleSpeed = 0;
         public override void OnStateEnter()
         {
+            
             Sim.SetWorldSpeed(stateWorldSpeed);
             Sim.SetUpdateGraphs(false);
             _cubeL = Sim.cubeL;
             _cube2 = Sim.cube2;
+            
+            
             //Sim.WriteProtocol(stateName + " has Started");
             // trägheit von Würfel 2 
             _traegheitsmomentCube2 = _cube2.GetTraegheitsmoment();
@@ -44,10 +47,13 @@ namespace Lab
             Debug.Log("Winkelgeschwindigkeit: " + angleSpeed);
             _angleSpeed = angleSpeed;
             Sim.WriteProtocol("Winkelgeschwindigkeit: " + angleSpeed);
+            Sim.WriteProtocol("Speed: " + _cube2.GetRidgidBody().velocity);
+            
         }
 
         public override void StateUpdate()
         {
+            /*
             // Calc Cube1 Forces
             Vector3 cube1FWind = Wind.GetWindForce(Cube1, Vector3.zero, 0f);
             Vector3 cube1Gravity = Cube1.GetMass() * Physics.gravity;
@@ -69,7 +75,9 @@ namespace Lab
             Cube2.GetRidgidBody().AddForce(cube2FTotal);
             
             // apply rotation to cubeL
-            _cubeL.RotateAroundFixedJoint(_angleSpeed);
+            _cubeL.RotateAroundFixedJoint(_angleSpeed);*/
+            Debug.Log("Speed"  + _cubeL.GetSpeed());
+            Debug.Log("Angular"  + _cube2.GetRidgidBody().angularVelocity);
         }
 
         public override void OnStateExit()

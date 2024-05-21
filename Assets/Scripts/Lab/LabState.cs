@@ -28,6 +28,8 @@ namespace Lab
         
         protected CubeController Cube1 => Sim.cube1;
         protected CubeController Cube2 => Sim.cube2;
+        
+        protected Rigidbody JointCubeL => Sim.jointCubeL;
         public abstract void OnStateEnter();
         public abstract void StateUpdate();
         public abstract void OnStateExit();

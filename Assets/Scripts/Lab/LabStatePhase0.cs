@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Animations;
 
 /*
  * Phase1 is a LabState that represents the first phase of the simulation.
@@ -12,38 +13,22 @@ using UnityEngine;
 namespace Lab
 {
     [CreateAssetMenu(fileName = "Phase0_", menuName = "Phasen/Phase0", order = 1)]
-    public class LabStatePhase0 : LabState
+    public class LabStatePhase0 : LabStatePhaseBase
     {
         public float springLength;
         public float springConstant;
         private SpringController SpringStart => Sim.springStart;
         public override void OnStateEnter()
         {
+            base.OnStateEnter();
             Sim.SetWorldSpeed(stateWorldSpeed);
             Sim.WriteProtocol(stateName+ " has Started");
         }
 
         public override void StateUpdate()
         {
-            // Calc Cube1 Forces
-            Vector3 cube1FWind = Wind.GetWindForce(Cube1, Vector3.zero, 0f);
-            Vector3 cube1Gravity = Cube1.GetMass() * Physics.gravity;
-            Vector3 cube1Normal = Cube1.GetNormalForceVector3(0f);
-            Vector3 cube1FFriction = Vector3.zero; //Sim.cube1.GetFriction(); not required
-
-            // Calc Cube2 Forces
-            Vector3 cube2FWind = Wind.GetWindForce(Cube2, Vector3.zero, 0f);
-            Vector3 cube2Gravity = Cube2.GetMass() * Physics.gravity;
-            Vector3 cube2Normal = Cube2.GetNormalForceVector3(0f);
-            Vector3 cube2FFriction = Vector3.zero; //Sim.cube2.GetFriction(); not required
             
-            // Calc Total Forces
-            Vector3 cube1FTotal = (cube1FWind - cube1FFriction) + (cube1Gravity - cube1Normal);
-            Vector3 cube2FTotal = (cube2FWind - cube2FFriction) + (cube2Gravity - cube2Normal);
             
-            // Apply Forces
-            Cube1.GetRidgidBody().AddForce(cube1FTotal);
-            Cube2.GetRidgidBody().AddForce(cube2FTotal);
             
             if(!SpringStart.cubeRight) return;
             if(SpringStart.cubeLeft) return;
@@ -61,6 +46,8 @@ namespace Lab
             
             if(SpringStart.cubeRight)
                 SpringStart.cubeRight.AddForce(SpringStart.IsCubeRightToTheRight() ? force : -force);
+            
+            base.OnStateEnter();
         }
 
         public override void OnStateExit()

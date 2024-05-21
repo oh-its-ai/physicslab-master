@@ -61,6 +61,7 @@ public class SimulationController : MonoBehaviour
     private List<List<float>> _timeSeries = new List<List<float>>();
     private ScriptableLab.Medium _medium;
     private float _mediumDensity;
+    public Rigidbody jointCubeL;
 
     private void Awake() 
     { 
