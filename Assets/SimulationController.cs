@@ -62,6 +62,7 @@ public class SimulationController : MonoBehaviour
     private ScriptableLab.Medium _medium;
     private float _mediumDensity;
     public Rigidbody jointCubeL;
+    public float drehImpuls;
 
     private void Awake() 
     { 
@@ -186,7 +187,8 @@ public class SimulationController : MonoBehaviour
             cube2.GetKineticEnergy(),
             spring1.GetSpringForce(),
             cube1.GetKineticEnergy() + cube2.GetKineticEnergy() + spring1.GetSpringForce(),
-            cube1.GetImpuls() + cube2.GetImpuls()
+            cube1.GetImpuls() + cube2.GetImpuls(),
+            drehImpuls
         });
     }
     
@@ -194,7 +196,7 @@ public class SimulationController : MonoBehaviour
     {
         using (var streamWriter = new StreamWriter("sim_time_series.csv"))
         {
-            streamWriter.WriteLine("t,v1,p1,F_1,v2,p2,F_2,F_spring,F_total,pTotal");
+            streamWriter.WriteLine("t,v1,p1,F_1,v2,p2,F_2,F_spring,F_total,pTotal, pd");
             foreach (List<float> timeStep in _timeSeries)
             {
                 streamWriter.WriteLine(string.Join(",", timeStep));

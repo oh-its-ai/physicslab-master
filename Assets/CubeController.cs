@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Linq;
 using TMPro;
 
 /*
@@ -32,6 +33,8 @@ public class CubeController : MonoBehaviour
     private float _lastSpeed;
     private Vector3 _previousPosition;
     private float _totalDistance;
+    
+    private List<Vector3> _velHistory = new List<Vector3>();
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +56,7 @@ public class CubeController : MonoBehaviour
         _totalDistance += distanceThisFrame;
         _previousPosition = transform.position;
         _timeSeries.Add(new List<float>() {SimulationController.Instance.GetSimTimeInSeconds(), _rigidBody.position.x, GetSpeed(), GetKineticEnergy(), GetImpuls()});
+        _velHistory.Add(_rigidBody.velocity);
         UpdateText();
     }
 
@@ -188,6 +192,13 @@ public class CubeController : MonoBehaviour
     #endregion
 
     
+    public Vector3 GetMaxSpeed()
+    {
+        // return vector furthest away from 0
+        return _velHistory.Aggregate((i1, i2) => i1.magnitude > i2.magnitude ? i1 : i2);
+        
+    }
+    
 
     
     
@@ -212,7 +223,7 @@ public class CubeController : MonoBehaviour
     public void AddToJoint(Rigidbody jointCubeL)
     {
         var joint = gameObject.AddComponent<FixedJoint>();
-        joint.massScale = 999;
+        joint.massScale = 100;
         joint.connectedBody = jointCubeL;
     }
 

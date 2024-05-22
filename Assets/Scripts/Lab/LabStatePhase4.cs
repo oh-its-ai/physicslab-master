@@ -51,8 +51,7 @@ namespace Lab
             CubeController cube2 = target.GetComponent<CubeController>();
             Sim.WriteProtocol("Energie: " + cube2.GetKineticEnergy());
             //cube2.AttachTo(cube.gameObject);
-            cube2.AddToJoint(JointCubeL);
-            cube2.DisableCollider();
+            
             //cube2.DisableRigidbody();
             //cube2.SetKinematic(true);
             Sim.ChangeState();
