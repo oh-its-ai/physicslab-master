@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: Start
   nextState: {fileID: 11400000, guid: b4221f441d035405c9df48cb47f6e511, type: 2}
-  stateWorldSpeed: 5
+  stateWorldSpeed: 1
   springLength: 0
   springConstant: 0

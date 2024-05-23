@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Lab
 {
     [CreateAssetMenu(fileName = "Phase2_", menuName = "Phasen/Phase2", order = 1)]
-    public class LabStatePhase2 : LabState
+    public class LabStatePhase2 : LabStatePhase1
     {
         public float SpringLength => Sim.GetActiveLabConfig().springLength; // m
         public float SpringConstant => Sim.GetActiveLabConfig().springConstant; // N/m

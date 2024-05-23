@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Lab
 {
     [CreateAssetMenu(fileName = "Phase4_", menuName = "Phasen/Phase4", order = 1)]
-    public class LabStatePhase4 : LabState
+    public class LabStatePhase4 : LabStatePhase3
     {
         public override void OnStateEnter()
         {

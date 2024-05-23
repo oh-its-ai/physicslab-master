@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -19,6 +20,24 @@ namespace Lab
 {
     public abstract class LabState : ScriptableObject
     {
+        public class LogValues
+        {
+            public List<String> Headers = new List<string>();
+            public List<List<float>> Values = new List<List<float>>();
+            
+            public void AddValue(String header, float value)
+            {
+                if (Headers.Exists(x => x == header))
+                {
+                    Values[Headers.IndexOf(header)].Add(value);
+                }
+                else
+                {
+                    Headers.Add(header);
+                    Values.Add(new List<float>(){value});
+                }
+            }
+        }
         public String stateName;
         public LabState nextState;
 
@@ -32,7 +51,11 @@ namespace Lab
         protected Rigidbody JointCubeL => Sim.jointCubeL;
         public abstract void OnStateEnter();
         public abstract void StateUpdate();
+        
+        public abstract void LogUpdate();
         public abstract void OnStateExit();
+        
+        public abstract LogValues GetLogValues();
         
         public abstract void RegisterEvent(CubeController cube, GameObject target);
     }

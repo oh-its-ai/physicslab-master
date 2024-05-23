@@ -63,7 +63,7 @@ public class SimulationController : MonoBehaviour
     private float _mediumDensity;
     public Rigidbody jointCubeL;
     public float drehImpuls;
-
+    public float bahndrehimpuls;
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
@@ -176,6 +176,9 @@ public class SimulationController : MonoBehaviour
 
     public void LogData()
     {
+        var logValues = _currentState.GetLogValues();
+        
+        
         _timeSeries.Add(new List<float>()
         {
             GetSimTimeInSeconds(),
@@ -188,7 +191,8 @@ public class SimulationController : MonoBehaviour
             spring1.GetSpringForce(),
             cube1.GetKineticEnergy() + cube2.GetKineticEnergy() + spring1.GetSpringForce(),
             cube1.GetImpuls() + cube2.GetImpuls(),
-            drehImpuls
+            drehImpuls,
+            bahndrehimpuls,
         });
     }
     
@@ -196,7 +200,7 @@ public class SimulationController : MonoBehaviour
     {
         using (var streamWriter = new StreamWriter("sim_time_series.csv"))
         {
-            streamWriter.WriteLine("t,v1,p1,F_1,v2,p2,F_2,F_spring,F_total,pTotal, pd");
+            streamWriter.WriteLine("t,v1,p1,F_1,v2,p2,F_2,F_spring,F_total,pTotal, pd, bahndrehimpuls");
             foreach (List<float> timeStep in _timeSeries)
             {
                 streamWriter.WriteLine(string.Join(",", timeStep));

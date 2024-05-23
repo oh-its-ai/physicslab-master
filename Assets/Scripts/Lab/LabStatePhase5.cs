@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Lab
 {
     [CreateAssetMenu(fileName = "Phase5_", menuName = "Phasen/Phase5", order = 1)]
-    public class LabStatePhase5 : LabState
+    public class LabStatePhase5 : LabStatePhase4
     {
         private CubeLController _cubeL;
         private CubeController _cube2;
@@ -20,6 +20,7 @@ namespace Lab
         private float _angleSpeed = 0;
 
         private Vector3 JointOrigin => _cubeL.fixedJoint.transform.position;
+        private Vector3 _hitJointPos;
         
         private Rigidbody _rbCubeLCube1;
         private Rigidbody _rbCubeLCube2;
@@ -52,7 +53,8 @@ namespace Lab
             _cube2HitDir = _cube2.GetMaxSpeed().normalized;
             
             // GOAL 1 BahnDrehImpuls des Würfels 2
-            _bahnDrehImpuls = CalcAngularMomentum(_cube2.GetRidgidBody(), JointOrigin);
+            _hitJointPos = JointOrigin;
+            _bahnDrehImpuls = CalcAngularMomentum(_cube2.GetRidgidBody(), _hitJointPos);
             
             // register hit
             _cube2.AddToJoint(JointCubeL);
@@ -81,6 +83,7 @@ namespace Lab
 
             Vector3 drehImpuls = sumTgm * _cube2.GetRidgidBody().angularVelocity;
             
+            _bahnDrehImpuls = CalcAngularMomentum(_cube2.GetRidgidBody(), _hitJointPos);
             Debug.Log("Bahndrehimpuls: " + _bahnDrehImpuls + " : Mag: " + _bahnDrehImpuls.magnitude);
             Debug.Log("EigenDrehimpuls V3: " + drehImpuls + " : Mag: " + drehImpuls.magnitude);
             
@@ -90,8 +93,6 @@ namespace Lab
             Vector3 translationImpuls = JointCubeL.velocity * 800;
             Debug.Log("L Koerper Translatorischer Impuls: " + translationImpuls + " : Mag: " + translationImpuls.magnitude);
             
-            Debug.Log("Wuerfel 2 Hit Richtung: " + _cube2HitDir);
-            Debug.Log("L Koerper Richtung: " + JointCubeL.velocity.normalized);
             
             Sim.drehImpuls = drehImpuls.magnitude;
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
@@ -27,8 +28,6 @@ namespace Lab
 
         public override void StateUpdate()
         {
-            
-            
             
             if(!SpringStart.cubeRight) return;
             if(SpringStart.cubeLeft) return;
@@ -59,6 +58,12 @@ namespace Lab
         public override void RegisterEvent(CubeController cube, GameObject target)
         {
             //nah
+        }
+
+        public override void LogUpdate()
+        {
+            base.LogUpdate();
+            
         }
     }
 }

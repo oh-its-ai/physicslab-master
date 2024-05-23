@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lab
@@ -9,6 +10,11 @@ namespace Lab
         public override void OnStateEnter()
         {
             Sim.SetWorldSpeed(stateWorldSpeed);
+        }
+
+        public override void LogUpdate()
+        {
+            GetLogValues().AddValue("Time", Sim.GetSimTimeInSeconds());
         }
 
         public override void StateUpdate()
@@ -39,9 +45,14 @@ namespace Lab
             throw new System.NotImplementedException();
         }
 
+        public override LogValues GetLogValues()
+        {
+            return new LogValues();
+        }
+
         public override void RegisterEvent(CubeController cube, GameObject target)
         {
-            throw new System.NotImplementedException();
+            //
         }
     }
 }
