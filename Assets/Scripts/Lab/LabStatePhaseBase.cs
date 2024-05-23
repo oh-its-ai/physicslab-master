@@ -7,6 +7,8 @@ namespace Lab
     {
         private Vector3 _cube1ForceTotal;
         private Vector3 _cube2ForceTotal;
+        
+        
         public override void OnStateEnter()
         {
             Sim.SetWorldSpeed(stateWorldSpeed);
@@ -42,12 +44,13 @@ namespace Lab
 
         public override void OnStateExit()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         public override LogValues GetLogValues()
         {
-            return new LogValues();
+            //LogValuesData = new LogValues();
+            return LogValuesData;
         }
 
         public override void RegisterEvent(CubeController cube, GameObject target)

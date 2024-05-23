@@ -63,6 +63,13 @@ namespace Lab
         public override void LogUpdate()
         {
             base.LogUpdate();
+            GetLogValues().AddValue("Cube1_Speed", Cube1.GetSpeed());
+            GetLogValues().AddValue("Cube1_Impuls", Cube1.GetImpuls());
+            GetLogValues().AddValue("Cube1_KineticEnergy", Cube1.GetKineticEnergy());
+            
+            GetLogValues().AddValue("Cube2_Speed", Cube2.GetSpeed());
+            GetLogValues().AddValue("Cube2_Impuls", Cube2.GetImpuls());
+            GetLogValues().AddValue("Cube2_KineticEnergy", Cube2.GetKineticEnergy());
             
         }
     }

@@ -5,15 +5,39 @@ namespace Lab
     [CreateAssetMenu(fileName = "Phase4_", menuName = "Phasen/Phase4", order = 1)]
     public class LabStatePhase4 : LabStatePhase3
     {
+        
+
+        protected Vector3 JointOrigin => CubeL.fixedJoint.transform.position;
+        protected Vector3 HitJointPos;
+        private bool _collectData = true;
+
         public override void OnStateEnter()
         {
             Sim.WriteProtocol(stateName + " has Started");
             Sim.SetWorldSpeed(stateWorldSpeed);
             Sim.SetActiveSpring(false);
+            HitJointPos = JointOrigin;
+            Debug.Log("CCCCCCCCC");
+            
+                Debug.Log("BBBBBBBBBBB");
+                BahnDrehImpuls = CalcAngularMomentum(Cube2.GetRidgidBody(), HitJointPos);
+                Debug.Log("AAAAAAAAAAAA");
+                _collectData = false;
+            
+        }
+
+        protected Vector3 CalcAngularMomentum(Rigidbody rb, Vector3 origin) 
+        {
+            Vector3 R = rb.transform.position - origin;
+            Vector3 p = rb.mass * rb.velocity;
+            Vector3 L = Vector3.Cross(R, p);
+            return L;
         }
 
         public override void StateUpdate()
         {
+            
+            
             // Calc Cube1 Forces
             Vector3 cube1FWind = Wind.GetWindForce(Cube1, Vector3.zero, 0f);
             Vector3 cube1Gravity = Cube1.GetMass() * Physics.gravity;
@@ -38,6 +62,12 @@ namespace Lab
             // teil 3 für ims LAB
         }
 
+        public override void LogUpdate()
+        {
+            base.LogUpdate();
+            
+            GetLogValues().AddValue("Cube2_BahnDrehImpuls", BahnDrehImpuls.magnitude);
+        }
         
         public override void OnStateExit()
         {
@@ -51,7 +81,7 @@ namespace Lab
             CubeController cube2 = target.GetComponent<CubeController>();
             Sim.WriteProtocol("Energie: " + cube2.GetKineticEnergy());
             //cube2.AttachTo(cube.gameObject);
-            
+            //_collectData = false;
             //cube2.DisableRigidbody();
             //cube2.SetKinematic(true);
             Sim.ChangeState();

@@ -19,14 +19,14 @@ namespace Lab
         private float _traegheitsmomentCubeL;
         private float _angleSpeed = 0;
 
-        private Vector3 JointOrigin => _cubeL.fixedJoint.transform.position;
-        private Vector3 _hitJointPos;
+        
         
         private Rigidbody _rbCubeLCube1;
         private Rigidbody _rbCubeLCube2;
         private Rigidbody _rbCubeLCube3;
-        private Vector3 _bahnDrehImpuls;
         private Vector3 _cube2HitImpuls;
+
+        private Vector3 drehImpuls;
         
         private List<LBodyPart> _lBodyParts = new List<LBodyPart>();
         private Vector3 _cube2HitDir;
@@ -48,13 +48,8 @@ namespace Lab
             _lBodyParts.Add(new LBodyPart(_rbCubeLCube3, CubePos.Mitte));
             _lBodyParts.Add(new LBodyPart(_cube2.GetRidgidBody(), CubePos.Aussen));
 
-            //_cube2HitImpuls = _cube2.GetRidgidBody().velocity * _cube2.GetMass();
             _cube2HitImpuls = _cube2.GetMaxSpeed() * _cube2.GetMass();
             _cube2HitDir = _cube2.GetMaxSpeed().normalized;
-            
-            // GOAL 1 BahnDrehImpuls des Würfels 2
-            _hitJointPos = JointOrigin;
-            _bahnDrehImpuls = CalcAngularMomentum(_cube2.GetRidgidBody(), _hitJointPos);
             
             // register hit
             _cube2.AddToJoint(JointCubeL);
@@ -63,38 +58,23 @@ namespace Lab
 
         public override void StateUpdate()
         {
-            
-
-            Vector3 amLCube1 = CalcAngularMomentum(_rbCubeLCube1, JointCubeL.transform.position);
-            Vector3 amLCube2 = CalcAngularMomentum(_rbCubeLCube2, JointCubeL.transform.position);
-            Vector3 amLCube3 = CalcAngularMomentum(_rbCubeLCube3, JointCubeL.transform.position);
-            Vector3 amCube2 = CalcAngularMomentum(_cube2.GetRidgidBody(), JointCubeL.transform.position);
-            
-            Vector3 sumAm = amLCube1 + amLCube2 + amLCube3 + amCube2;
-            Debug.Log("Summe Momentum: " + sumAm);
-            
-            float tgmLCube1 = CalcTraegheitsMoment(_rbCubeLCube1, CubePos.Mitte);
-            float tgmLCube2 = CalcTraegheitsMoment(_rbCubeLCube2, CubePos.Aussen);
-            float tgmLCube3 = CalcTraegheitsMoment(_rbCubeLCube3, CubePos.Mitte);
-            float tgmCube2 = CalcTraegheitsMoment(_cube2.GetRidgidBody(), CubePos.Aussen);
-            
             float sumTgm = CalcSumTraegheitsMoment(_lBodyParts);
-            Debug.Log("Summe Traegheitsmoment: " + sumTgm);
-
-            Vector3 drehImpuls = sumTgm * _cube2.GetRidgidBody().angularVelocity;
+            drehImpuls = (sumTgm) * Cube2.GetRidgidBody().angularVelocity;
             
-            _bahnDrehImpuls = CalcAngularMomentum(_cube2.GetRidgidBody(), _hitJointPos);
-            Debug.Log("Bahndrehimpuls: " + _bahnDrehImpuls + " : Mag: " + _bahnDrehImpuls.magnitude);
-            Debug.Log("EigenDrehimpuls V3: " + drehImpuls + " : Mag: " + drehImpuls.magnitude);
-            
-            Debug.Log("L Mass: " + CalcLBodyMass(_lBodyParts) + " Vel: " + CalcTranslationVel(_lBodyParts));
+            Debug.Log("Bahndrehimpuls: " + BahnDrehImpuls + " : Mag: " + BahnDrehImpuls.magnitude);
+            Debug.Log("L EigenDrehimpuls: V3: " + drehImpuls + " : Mag: " + drehImpuls.magnitude);
+            Debug.Log("L Mass: " + CalcLBodyMass(_lBodyParts) + " Vel: " + CalcTranslationVel(_lBodyParts) + "Angular Vel: " + JointCubeL.angularVelocity + " -> Mag: " + JointCubeL.angularVelocity.magnitude);
             Debug.Log("Wuerlfel 2 Hit Impuls: " + _cube2HitImpuls + " : Mag: " + _cube2HitImpuls.magnitude);
-
+            
             Vector3 translationImpuls = JointCubeL.velocity * 800;
             Debug.Log("L Koerper Translatorischer Impuls: " + translationImpuls + " : Mag: " + translationImpuls.magnitude);
-            
-            
-            Sim.drehImpuls = drehImpuls.magnitude;
+        }
+        
+        public override void LogUpdate()
+        {
+            base.LogUpdate();
+            GetLogValues().AddValue("L_EigenDrehImpuls", drehImpuls.magnitude);
+            GetLogValues().AddValue("L_GesamtDrehImpuls", BahnDrehImpuls.magnitude + drehImpuls.magnitude);
         }
         
         private Vector3 CalcTranslationVel(List<LBodyPart> lBodyParts)
@@ -162,13 +142,7 @@ namespace Lab
             return angleSpeed;
         }
 
-        public Vector3 CalcAngularMomentum(Rigidbody rb, Vector3 origin) 
-        {
-            Vector3 R = rb.transform.position - origin;
-            Vector3 p = rb.mass * rb.velocity;
-            Vector3 L = Vector3.Cross(R, p);
-            return L;
-        }
+        
         
         public enum CubePos
         {
@@ -188,15 +162,14 @@ namespace Lab
         }
         public float CalcTraegheitsMoment(Rigidbody rb, CubePos cubePos)
         {
-            float a = 1; //rb.angularVelocity.magnitude;
+            float a = 1f; 
             float m = rb.mass;
-
             switch (cubePos)
             {
                 case CubePos.Mitte:
-                    return ((1.0f/6.0f) * m * Mathf.Pow(a, 2.0f)) + (m * Mathf.Pow((a/2),2.0f));
+                    return ((1.0f/6.0f) * m * Mathf.Pow(a, 2.0f)) + (m * Mathf.Pow((a/2.0f),2.0f));
                 case CubePos.Aussen:
-                    return ((1.0f/6.0f) * m * Mathf.Pow(a, 2.0f)) + (m * Mathf.Pow((a/2) + Mathf.Pow(a, 2.0f) ,2.0f));
+                    return ((1.0f/6.0f) * m * Mathf.Pow(a, 2.0f)) + (m * (Mathf.Pow(a, 2.0f) + Mathf.Pow((a/2.0f), 2.0f)));
             }
             
             return 0;

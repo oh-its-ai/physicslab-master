@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,10 +35,47 @@ namespace Lab
                 else
                 {
                     Headers.Add(header);
-                    Values.Add(new List<float>(){value});
+                    
+                    var newList = new List<float>();
+                    //fill with zeros
+                    var count = Values.Count > 0 ? Values[0].Count : 0;
+                    for (int i = 0; i < count; i++)
+                    {
+                        newList.Add(0);
+                    }
+                    newList.Add(value);
+                    Values.Add(newList);
                 }
             }
+
+            public List<List<float>> GetTransposedValues()
+            {
+                var transposed = new List<List<float>>();
+                for (int i = 0; i < Values[0].Count; i++)
+                {
+                    var newList = new List<float>();
+                    for (int j = 0; j < Values.Count; j++)
+                    {
+                        newList.Add(Values[j][i]);
+                    }
+                    transposed.Add(newList);
+                }
+
+                return transposed;
+            }
+            
+            public string GetHeaderString()
+            {
+                return String.Join(",", Headers);
+            }
         }
+        
+        protected Vector3 BahnDrehImpuls
+        {
+            get => Sim.bahndrehimpuls;
+            set => Sim.bahndrehimpuls = value;
+        }
+        
         public String stateName;
         public LabState nextState;
 
@@ -47,14 +85,20 @@ namespace Lab
         
         protected CubeController Cube1 => Sim.cube1;
         protected CubeController Cube2 => Sim.cube2;
-        
+        protected CubeLController CubeL => Sim.cubeL;
         protected Rigidbody JointCubeL => Sim.jointCubeL;
         public abstract void OnStateEnter();
         public abstract void StateUpdate();
         
         public abstract void LogUpdate();
         public abstract void OnStateExit();
-        
+
+        protected LogValues LogValuesData
+        {
+            get => Sim.LogValues;
+            set => Sim.LogValues = value;
+        }
+
         public abstract LogValues GetLogValues();
         
         public abstract void RegisterEvent(CubeController cube, GameObject target);

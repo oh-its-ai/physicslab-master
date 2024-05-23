@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: Feder
   nextState: {fileID: 11400000, guid: b708a130d03f84e4aac96ea22bd7820a, type: 2}
-  stateWorldSpeed: 1
+  stateWorldSpeed: 5
+  springLength: 0
+  springConstant: 0
+  windDirection: {x: 1, y: 0, z: 0}
+  windSpeed: 1

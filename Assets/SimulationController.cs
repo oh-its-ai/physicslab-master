@@ -20,6 +20,7 @@ public class SimulationController : MonoBehaviour
     // Config
     public ScriptableLab labConfig;
     public static SimulationController Instance { get; private set; }
+    public LabState.LogValues LogValues { get; set; } = new LabState.LogValues();
 
     private LabState _currentState;
     
@@ -63,7 +64,9 @@ public class SimulationController : MonoBehaviour
     private float _mediumDensity;
     public Rigidbody jointCubeL;
     public float drehImpuls;
-    public float bahndrehimpuls;
+    public Vector3 bahndrehimpuls;
+    private string _timeSeriesHeader;
+
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
@@ -82,7 +85,6 @@ public class SimulationController : MonoBehaviour
         // load Variables from ScriptableLab
         _medium = labConfig.medium;
         _mediumDensity = labConfig.MediumDensity;
-        //protocolText.text = "Start: " + 0;
         _mainCamera = Camera.main;
         spring1.SetSpringLength(GetActiveLabConfig().springLength);
         
@@ -101,14 +103,16 @@ public class SimulationController : MonoBehaviour
         if (secondsSinceStartInt > _lastLoggedSecond)
         {
             _lastLoggedSecond = (int)_secondsSinceStart;
-            
             UpdateGraphs();
         }
-
-        LogData();
         
         if(_currentState) _currentState.StateUpdate();
-        
+        //execute every .1 seconds
+        if (_secondsSinceStart % 1 < 0.02)
+        {
+            LogData();
+        }
+        //LogData();
     }
 
     private void Update()
@@ -176,9 +180,18 @@ public class SimulationController : MonoBehaviour
 
     public void LogData()
     {
+        _currentState.LogUpdate();
         var logValues = _currentState.GetLogValues();
+        foreach (var logValue in logValues.Values)
+        {
+            //_timeSeries.Add(logValue);
+        }
+
+        _timeSeriesHeader = logValues.GetHeaderString();
+        _timeSeries = logValues.GetTransposedValues();
+        //Debug.Log("Header: " + _timeSeriesHeader);
         
-        
+        return;
         _timeSeries.Add(new List<float>()
         {
             GetSimTimeInSeconds(),
@@ -192,7 +205,7 @@ public class SimulationController : MonoBehaviour
             cube1.GetKineticEnergy() + cube2.GetKineticEnergy() + spring1.GetSpringForce(),
             cube1.GetImpuls() + cube2.GetImpuls(),
             drehImpuls,
-            bahndrehimpuls,
+            //bahndrehimpuls,
         });
     }
     
@@ -200,7 +213,7 @@ public class SimulationController : MonoBehaviour
     {
         using (var streamWriter = new StreamWriter("sim_time_series.csv"))
         {
-            streamWriter.WriteLine("t,v1,p1,F_1,v2,p2,F_2,F_spring,F_total,pTotal, pd, bahndrehimpuls");
+            streamWriter.WriteLine(_timeSeriesHeader); //WriteLine("t,v1,p1,F_1,v2,p2,F_2,F_spring,F_total,pTotal, pd, bahndrehimpuls");
             foreach (List<float> timeStep in _timeSeries)
             {
                 streamWriter.WriteLine(string.Join(",", timeStep));
@@ -336,5 +349,10 @@ public class SimulationController : MonoBehaviour
     public void SetWorldSpeed(float stateWorldSpeed)
     {
         Time.timeScale = stateWorldSpeed;
+    }
+
+    public int GetSimSecond()
+    {
+        return _lastLoggedSecond;
     }
 }
