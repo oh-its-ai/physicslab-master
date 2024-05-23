@@ -2207,7 +2207,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401370802}
   serializedVersion: 4
-  m_Mass: 200
+  m_Mass: 190
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2669,7 +2669,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700953107}
   serializedVersion: 4
-  m_Mass: 800
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -5524,7 +5524,7 @@ MonoBehaviour:
   valueListCube2Vel: 
   jointCubeL: {fileID: 700953110}
   drehImpuls: 0
-  bahndrehimpuls: 0
+  bahndrehimpuls: {x: 0, y: 0, z: 0}
 --- !u!1 &1497620706
 GameObject:
   m_ObjectHideFlags: 0
@@ -13529,8 +13529,8 @@ SceneRoots:
   - {fileID: 1563004089}
   - {fileID: 401370803}
   - {fileID: 1464014481}
-  - {fileID: 2127581182}
   - {fileID: 1893627967}
+  - {fileID: 2127581182}
   - {fileID: 700953108}
   - {fileID: 387083900}
   - {fileID: 786252423}
