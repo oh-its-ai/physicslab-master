@@ -63,11 +63,6 @@ namespace Lab
             
             Debug.Log("Bahndrehimpuls: " + BahnDrehImpuls + " : Mag: " + BahnDrehImpuls.magnitude);
             Debug.Log("L EigenDrehimpuls: V3: " + drehImpuls + " : Mag: " + drehImpuls.magnitude);
-            Debug.Log("L Mass: " + CalcLBodyMass(_lBodyParts) + " Vel: " + CalcTranslationVel(_lBodyParts) + "Angular Vel: " + JointCubeL.angularVelocity + " -> Mag: " + JointCubeL.angularVelocity.magnitude);
-            Debug.Log("Wuerlfel 2 Hit Impuls: " + _cube2HitImpuls + " : Mag: " + _cube2HitImpuls.magnitude);
-            
-            Vector3 translationImpuls = JointCubeL.velocity * 800;
-            Debug.Log("L Koerper Translatorischer Impuls: " + translationImpuls + " : Mag: " + translationImpuls.magnitude);
         }
         
         public override void LogUpdate()
@@ -75,52 +70,6 @@ namespace Lab
             base.LogUpdate();
             GetLogValues().AddValue("L_EigenDrehImpuls", drehImpuls.magnitude);
             GetLogValues().AddValue("L_GesamtDrehImpuls", BahnDrehImpuls.magnitude + drehImpuls.magnitude);
-        }
-        
-        private Vector3 CalcTranslationVel(List<LBodyPart> lBodyParts)
-        {
-            Vector3 sum = Vector3.zero;
-            foreach (LBodyPart lBodyPart in lBodyParts)
-            {
-                sum += lBodyPart.rb.velocity;
-            }
-            
-            // sum /= lBodyParts.Count;
-
-            return sum / lBodyParts.Count;
-        }
-        
-        private float CalcLBodyMass(List<LBodyPart> lBodyParts)
-        {
-            float sum = 0;
-            foreach (LBodyPart lBodyPart in lBodyParts)
-            {
-                sum += lBodyPart.rb.mass;
-            }
-
-            return sum;
-        }
-        
-        private float CalcTranslationImpuls(List<LBodyPart> lBodyParts)
-        {
-            float sum = 0;
-            foreach (LBodyPart lBodyPart in lBodyParts)
-            {
-                sum += lBodyPart.rb.mass * lBodyPart.rb.velocity.magnitude;
-            }
-
-            return sum;
-        }
-
-        private Vector3 CalcTranslationImpulsV3(List<LBodyPart> lBodyParts)
-        {
-            Vector3 sum = Vector3.zero;
-            foreach (LBodyPart lBodyPart in lBodyParts)
-            {
-                sum += lBodyPart.rb.mass * lBodyPart.rb.velocity;
-            }
-
-            return sum;
         }
         
         public float CalcAngleSpeed()
@@ -141,8 +90,6 @@ namespace Lab
             
             return angleSpeed;
         }
-
-        
         
         public enum CubePos
         {
@@ -183,14 +130,6 @@ namespace Lab
         public override void RegisterEvent(CubeController cube, GameObject target)
         {
             //nah
-        }
-
-        private Vector3 GetNewSchwerpunkt()
-        {
-            return (_cubeL.cube1.transform.position 
-                + _cubeL.cube2.transform.position 
-                + _cubeL.cube3.transform.position
-                + _cube2.transform.position) / 4;
         }
         
         private class LBodyPart

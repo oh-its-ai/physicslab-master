@@ -17,12 +17,7 @@ namespace Lab
             Sim.SetWorldSpeed(stateWorldSpeed);
             Sim.SetActiveSpring(false);
             HitJointPos = JointOrigin;
-            Debug.Log("CCCCCCCCC");
-            
-                Debug.Log("BBBBBBBBBBB");
-                BahnDrehImpuls = CalcAngularMomentum(Cube2.GetRidgidBody(), HitJointPos);
-                Debug.Log("AAAAAAAAAAAA");
-                _collectData = false;
+            BahnDrehImpuls = CalcAngularMomentum(Cube2.GetRidgidBody(), HitJointPos);
             
         }
 
