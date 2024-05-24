@@ -27,6 +27,8 @@ namespace Lab
             Sim.SetWorldSpeed(stateWorldSpeed);
             Sim.SetUpdateGraphs(false);
             
+            Sim.NextCamera(2);
+            
             _rbCubeLCube1 = CubeL.cube1.GetComponent<Rigidbody>();
             _rbCubeLCube2 = CubeL.cube2.GetComponent<Rigidbody>();
             _rbCubeLCube3 = CubeL.cube3.GetComponent<Rigidbody>();

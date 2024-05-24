@@ -107,8 +107,8 @@ public class SimulationController : MonoBehaviour
         }
         
         if(_currentState) _currentState.StateUpdate();
-        //execute every .1 seconds
-        if (_secondsSinceStart % 1 < 0.02)
+        //execute every .05 seconds
+        if (_secondsSinceStart % 0.1 < 0.02)
         {
             LogData();
         }
@@ -194,13 +194,7 @@ public class SimulationController : MonoBehaviour
         return;
         _timeSeries.Add(new List<float>()
         {
-            GetSimTimeInSeconds(),
-            cube1.GetSpeed(),
-            cube1.GetImpuls(),
-            cube1.GetKineticEnergy(),
-            cube2.GetSpeed(),
-            cube2.GetImpuls(),
-            cube2.GetKineticEnergy(),
+            
             spring1.GetSpringForce(),
             cube1.GetKineticEnergy() + cube2.GetKineticEnergy() + spring1.GetSpringForce(),
             cube1.GetImpuls() + cube2.GetImpuls(),
