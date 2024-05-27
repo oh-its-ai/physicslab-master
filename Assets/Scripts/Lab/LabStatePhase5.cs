@@ -21,6 +21,8 @@ namespace Lab
         
         private List<LBodyPart> _lBodyParts = new List<LBodyPart>();
         private Vector3 _cube2HitDir;
+        private float _L_EKinRotation;
+        private float _L_EkinTranslation;
 
         public override void OnStateEnter()
         {
@@ -46,10 +48,14 @@ namespace Lab
         public override void StateUpdate()
         {
             float sumTgm = CalcSumTraegheitsMoment(_lBodyParts);
-            _drehImpuls = (sumTgm) * Cube2.GetRidgidBody().angularVelocity;
+            _drehImpuls = (sumTgm) * Cube2.GetRidgidBody().angularVelocity; 
+            _L_EKinRotation = 0.5f * sumTgm * Mathf.Pow(Cube2.GetRidgidBody().angularVelocity.magnitude, 2.0f);
+            _L_EkinTranslation = 0.5f * 800 * JointCubeL.velocity.magnitude;
             
             Debug.Log("Bahndrehimpuls: " + BahnDrehImpuls + " : Mag: " + BahnDrehImpuls.magnitude);
             Debug.Log("L EigenDrehimpuls: V3: " + _drehImpuls + " : Mag: " + _drehImpuls.magnitude);
+            Debug.Log("L EKin_Rotation: " + _L_EKinRotation + " L EKin_Translation: " + _L_EkinTranslation + " L Gesamt: " + (_L_EKinRotation + _L_EkinTranslation));
+            
         }
         
         public override void LogUpdate()
@@ -57,6 +63,10 @@ namespace Lab
             base.LogUpdate();
             GetLogValues().AddValue("L_EigenDrehImpuls", _drehImpuls.magnitude);
             GetLogValues().AddValue("L_GesamtDrehImpuls", BahnDrehImpuls.magnitude + _drehImpuls.magnitude);
+            GetLogValues().AddValue("L_EKin_Rotation", _L_EKinRotation);
+            GetLogValues().AddValue("L_EKin_Translation", _L_EkinTranslation);
+            GetLogValues().AddValue("L_EKin_Gesamt", _L_EKinRotation + _L_EkinTranslation);
+            
         }
         
         public float CalcAngleSpeed()

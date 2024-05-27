@@ -70,7 +70,7 @@ namespace Lab
             GetLogValues().AddValue("Cube2_Speed", Cube2.GetSpeed());
             GetLogValues().AddValue("Cube2_Impuls", Cube2.GetImpuls());
             GetLogValues().AddValue("Cube2_KineticEnergy", Cube2.GetKineticEnergy());
-            
+            GetLogValues().AddValue("Spring2_Energy", Sim.spring1.GetSpringForce());
         }
     }
 }

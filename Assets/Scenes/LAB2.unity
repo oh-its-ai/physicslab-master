@@ -2221,7 +2221,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401370802}
   serializedVersion: 4
-  m_Mass: 190
+  m_Mass: 200
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2683,7 +2683,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700953107}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 3
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -4986,7 +4986,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 110.20001, y: 30.799988}
+  m_AnchoredPosition: {x: 110.19995, y: 30.800049}
   m_SizeDelta: {x: 54, y: 63}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1342857704
@@ -5303,7 +5303,7 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1464014480}
-  m_ConnectedBody: {fileID: 700953110}
+  m_ConnectedBody: {fileID: 2127581189}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
