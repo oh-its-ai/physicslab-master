@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: Ende LAB2
   nextState: {fileID: 11400000, guid: 4525f5b032767454d954e852f9d2f939, type: 2}
-  stateWorldSpeed: 1
+  stateWorldSpeed: 5
   springLength: 0
   springConstant: 0
   windDirection: {x: 1, y: 0, z: 0}

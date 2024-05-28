@@ -49,13 +49,13 @@ namespace Lab
         {
             float sumTgm = CalcSumTraegheitsMoment(_lBodyParts);
             _drehImpuls = (sumTgm) * Cube2.GetRidgidBody().angularVelocity; 
-            _L_EKinRotation = 0.5f * sumTgm * Mathf.Pow(Cube2.GetRidgidBody().angularVelocity.magnitude, 2.0f);
+            _L_EKinRotation = 0.5f * sumTgm * Mathf.Pow(JointCubeL.angularVelocity.magnitude, 2.0f);
             _L_EkinTranslation = 0.5f * 800 * JointCubeL.velocity.magnitude;
             
             Debug.Log("Bahndrehimpuls: " + BahnDrehImpuls + " : Mag: " + BahnDrehImpuls.magnitude);
             Debug.Log("L EigenDrehimpuls: V3: " + _drehImpuls + " : Mag: " + _drehImpuls.magnitude);
             Debug.Log("L EKin_Rotation: " + _L_EKinRotation + " L EKin_Translation: " + _L_EkinTranslation + " L Gesamt: " + (_L_EKinRotation + _L_EkinTranslation));
-            
+            Debug.Log("L Speed: " + JointCubeL.velocity.magnitude);
         }
         
         public override void LogUpdate()
@@ -108,12 +108,13 @@ namespace Lab
         {
             float a = 1f; 
             float m = rb.mass;
+            float d = Vector3.Magnitude(rb.transform.position - JointCubeL.worldCenterOfMass) - 0.5f;
             switch (cubePos)
             {
                 case CubePos.Mitte:
-                    return ((1.0f/6.0f) * m * Mathf.Pow(a, 2.0f)) + (m * Mathf.Pow((a/2.0f),2.0f));
+                    return ((1.0f/6.0f) * m * Mathf.Pow(a, 2.0f)) + (m * Mathf.Pow((d/2.0f),2.0f));
                 case CubePos.Aussen:
-                    return ((1.0f/6.0f) * m * Mathf.Pow(a, 2.0f)) + (m * (Mathf.Pow(a, 2.0f) + Mathf.Pow((a/2.0f), 2.0f)));
+                    return ((1.0f/6.0f) * m * Mathf.Pow(a, 2.0f)) + (m * (Mathf.Pow(a, 2.0f) + Mathf.Pow((d/2.0f), 2.0f)));
             }
             
             return 0;

@@ -2205,13 +2205,13 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401370802}
-  m_ConnectedBody: {fileID: 2127581189}
+  m_ConnectedBody: {fileID: 700953110}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
-  m_MassScale: 100
+  m_MassScale: 200
   m_ConnectedMassScale: 1
 --- !u!54 &401370810
 Rigidbody:
@@ -2238,7 +2238,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!1 &453517846
 GameObject:
@@ -2669,7 +2669,7 @@ Transform:
   m_GameObject: {fileID: 700953107}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.0360003, y: 0.6, z: -0.43900013}
+  m_LocalPosition: {x: -6.0360003, y: 0.6, z: -0.498}
   m_LocalScale: {x: 0.07331311, y: 1.0010647, z: 0.0733131}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2683,7 +2683,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700953107}
   serializedVersion: 4
-  m_Mass: 3
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2697,10 +2697,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!33 &700953111
 MeshFilter:
@@ -5303,13 +5303,13 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1464014480}
-  m_ConnectedBody: {fileID: 2127581189}
+  m_ConnectedBody: {fileID: 700953110}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
-  m_MassScale: 100
+  m_MassScale: 200
   m_ConnectedMassScale: 1
 --- !u!54 &1464014488
 Rigidbody:
@@ -5336,7 +5336,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!1 &1480273798
 GameObject:
@@ -6106,7 +6106,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 200
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -6118,7 +6118,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -7926,7 +7926,7 @@ Transform:
   m_GameObject: {fileID: 1893627966}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.05, y: 0.5, z: -0.5}
+  m_LocalPosition: {x: -7.468, y: 0.5, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7940,7 +7940,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893627966}
   serializedVersion: 4
-  m_Mass: 10
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -7957,7 +7957,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!65 &1893627969
 BoxCollider:
@@ -7978,8 +7978,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 1, z: 2}
-  m_Center: {x: 1.5, y: 0, z: 0}
+  m_Size: {x: 1.0080776, y: 1, z: 0.9860177}
+  m_Center: {x: 1.421011, y: 0, z: 0.50699115}
 --- !u!138 &1893627970
 FixedJoint:
   m_ObjectHideFlags: 0
@@ -7993,7 +7993,7 @@ FixedJoint:
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
-  m_MassScale: 1
+  m_MassScale: 200
   m_ConnectedMassScale: 1
 --- !u!114 &1893627971
 MonoBehaviour:
@@ -13491,13 +13491,13 @@ FixedJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2127581181}
-  m_ConnectedBody: {fileID: 1464014488}
+  m_ConnectedBody: {fileID: 700953110}
   m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
-  m_MassScale: 100
+  m_MassScale: 200
   m_ConnectedMassScale: 1
 --- !u!54 &2127581189
 Rigidbody:
@@ -13524,7 +13524,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!1001 &3620070103315960955
 PrefabInstance:
@@ -13639,9 +13639,9 @@ SceneRoots:
   - {fileID: 1824153252}
   - {fileID: 620551740}
   - {fileID: 1563004089}
+  - {fileID: 1893627967}
   - {fileID: 401370803}
   - {fileID: 1464014481}
-  - {fileID: 1893627967}
   - {fileID: 2127581182}
   - {fileID: 700953108}
   - {fileID: 387083900}

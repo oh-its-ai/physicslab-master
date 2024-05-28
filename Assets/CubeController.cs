@@ -223,7 +223,7 @@ public class CubeController : MonoBehaviour
     public void AddToJoint(Rigidbody jointCubeL)
     {
         var joint = gameObject.AddComponent<FixedJoint>();
-        joint.massScale = 100;
+        joint.massScale = 200;
         joint.connectedBody = jointCubeL;
     }
 
